@@ -11,17 +11,17 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 	ifstream instFile (filename);
 	string tmp;
 	if (instFile.is_open()) {
-		while(instFile.peek() == '#') 
-			instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip comments	
+		while(instFile.peek() == '#')
+			instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip comments
 		instFile >> instance->numVertices;
 		instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip remainder of line
 
-		while(instFile.peek() == '#') 
-			getline(instFile, tmp);	// skip comments			
+		while(instFile.peek() == '#')
+			getline(instFile, tmp);	// skip comments
 		instFile >> instance->K;
 		instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip remainder of line
 
-		while(instFile.peek() == '#') 
+		while(instFile.peek() == '#')
 			instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip comments
 		instance->adjacencyMatrix = new bool*[instance->numVertices];
 		for (unsigned int i=0; i < instance->numVertices; i++) {
@@ -33,14 +33,14 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 				instance->adjacencyMatrix[i][j] = false;
 		}
 
-		while(true) {  
+		while(true) {
 			if(instFile.peek() == '#')
 				instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip comments
 			else {
 				unsigned int a, b;
 				instFile >> a >> b;
 				if(instFile.eof())
-					break;				
+					break;
 				instFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');	// skip remainder of line (page number)
 				instance->adjacencyList[a].push_back(b);
 				instance->adjacencyList[b].push_back(a);
@@ -56,7 +56,7 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 		}
 
 		instFile.close();
-                
+
 		for (unsigned int i=0; i < instance->numVertices; i++) {
 			std::sort(instance->adjacencyList[i].begin(), instance->adjacencyList[i].end());
 			auto last = std::unique(instance->adjacencyList[i].begin(), instance->adjacencyList[i].end());
@@ -66,7 +66,7 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
         sort(instance->edgesList.begin(), instance->edgesList.end(), KPMPInstance::compare_function);
 	}
 	else {
-		cerr << "Unable to open file"; 
+		cerr << "Unable to open file";
 		return NULL;
 	}
 
@@ -74,13 +74,13 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 }
 
 int main() {
-    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/kory/books-data/automatic-1.txt");
     ConstructionHeuristic dch;
     vector< vector<int> > result = dch.calculatePages(instance->getEdgesList(), instance->getK());
     KPMPSolutionWriter writer(instance->getK());
     for(int i=0; i<result.size(); i++){
         writer.addEdgeOnPage(result[i][0], result[i][1], result[i][2]);
     }
-    writer.write("/home/magda/instances/result.txt");
+    writer.write("/home/kory/books-data/result.txt");
     return 0;
 }
