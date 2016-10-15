@@ -3,13 +3,16 @@
 
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <ctime>
+#include <iostream>
 
 using namespace std;
 
-class DeterministicConstructionHeuristic
+class ConstructionHeuristic
 {
 public:
-    DeterministicConstructionHeuristic();
+    ConstructionHeuristic();
 
     vector< vector<int> > calculatePages(vector< vector<int> > edgesList, unsigned int K);
 
@@ -17,7 +20,11 @@ private:
 
     unsigned int countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum);
 
-    unsigned int choseMinimumCrossingPage(vector<unsigned int> pagesList);
+    unsigned int pageSelection(vector<vector<unsigned int> > pagesList, int groupSize=1);
+
+    static bool compare_function (vector<unsigned int> i,vector<unsigned int> j){
+        return (i[1]<j[1]);
+    }
 };
 
 #endif // DETERMINISTICCONSTRUCTIONHEURISTIC_H

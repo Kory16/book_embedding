@@ -1,25 +1,28 @@
 #include "deterministicconstructionheuristic.h"
 
-DeterministicConstructionHeuristic::DeterministicConstructionHeuristic()
+ConstructionHeuristic::ConstructionHeuristic()
 {
 
 }
 
-vector<vector<int> > DeterministicConstructionHeuristic::calculatePages(vector<vector<int> > edgesList, unsigned int K){
+vector<vector<int> > ConstructionHeuristic::calculatePages(vector<vector<int> > edgesList, unsigned int K){
     edgesList.at(0)[2] = 0;
     for(unsigned int i = 1; i<edgesList.size(); i++){
-        vector<unsigned int> CL;
+        cout<<i<<endl;
+        vector<vector<unsigned int> > CL;
         for(unsigned int j=0; j<K; j++){
             edgesList.at(i)[2]=j;
             int crossings = countCrossings(edgesList.begin(), edgesList.begin()+i, j);
-            CL.push_back(crossings);
+            CL.push_back(vector<unsigned int>());
+            CL.back().push_back(j);
+            CL.back().push_back(crossings);
         }
-        edgesList.at(i)[2] = choseMinimumCrossingPage(CL);
+        edgesList.at(i)[2] = pageSelection(CL);
     }
     return edgesList;
 }
 
-unsigned int DeterministicConstructionHeuristic::choseMinimumCrossingPage(vector< unsigned int> pagesList){
+/*unsigned int ConstructionHeuristic::choseMinimumCrossingPage(vector< unsigned int> pagesList){
     unsigned int min = pagesList[0];
     unsigned int minPage = 0;
     for(unsigned int i=1; i<pagesList.size(); i++){
@@ -29,9 +32,16 @@ unsigned int DeterministicConstructionHeuristic::choseMinimumCrossingPage(vector
         }
     }
     return minPage;
+}*/
+
+unsigned int ConstructionHeuristic::pageSelection(vector<vector<unsigned int> > pagesList, int groupSize){
+    sort(pagesList.begin(), pagesList.end(), ConstructionHeuristic::compare_function);
+    std::srand(std::time(0));
+    int randPage = rand()%(groupSize+1);
+    return pagesList[randPage][0];
 }
 
-unsigned int DeterministicConstructionHeuristic::countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum){
+unsigned int ConstructionHeuristic::countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum){
     vector < vector<int> > edgesOnPage;
     for(; begin!=end; begin++){
         if (begin->at(2)!=pageNum)
