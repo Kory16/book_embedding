@@ -2,6 +2,7 @@
 #define DETERMINISTICCONSTRUCTIONHEURISTIC_H
 
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -10,11 +11,13 @@ class DeterministicConstructionHeuristic
 public:
     DeterministicConstructionHeuristic();
 
-    void calculatePages(vector< vector<int> > *edgesList);
+    vector< vector<int> > calculatePages(vector< vector<int> > edgesList, unsigned int K);
 
 private:
 
-    int countCrossings(vector< vector<int> > edgesList);
+    unsigned int countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum);
+
+    unsigned int choseMinimumCrossingPage(vector<unsigned int> pagesList);
 };
 
 #endif // DETERMINISTICCONSTRUCTIONHEURISTIC_H

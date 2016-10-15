@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include "deterministicconstructionheuristic.h"
 
 using namespace std;
 

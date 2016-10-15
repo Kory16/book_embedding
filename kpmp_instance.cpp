@@ -74,6 +74,8 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 }
 
 int main() {
-    KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
+    DeterministicConstructionHeuristic dch;
+    dch.calculatePages(instance->getEdgesList(), instance->getK());
     return 0;
 }
