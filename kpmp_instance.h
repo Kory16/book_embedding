@@ -7,6 +7,7 @@
 #include <cmath>
 #include <algorithm>
 #include "deterministicconstructionheuristic.h"
+#include "kpmp_solution_writer.h"
 
 using namespace std;
 
