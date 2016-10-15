@@ -12,7 +12,7 @@ vector<vector<int> > ConstructionHeuristic::calculatePages(vector<vector<int> > 
         vector<vector<unsigned int> > CL;
         for(unsigned int j=0; j<K; j++){
             edgesList.at(i)[2]=j;
-            int crossings = countCrossings(edgesList.begin(), edgesList.begin()+i, j);
+            int crossings = countCrossings(edgesList.begin(), edgesList.begin()+i+1, j);
             CL.push_back(vector<unsigned int>());
             CL.back().push_back(j);
             CL.back().push_back(crossings);
@@ -37,7 +37,7 @@ vector<vector<int> > ConstructionHeuristic::calculatePages(vector<vector<int> > 
 unsigned int ConstructionHeuristic::pageSelection(vector<vector<unsigned int> > pagesList, int groupSize){
     sort(pagesList.begin(), pagesList.end(), ConstructionHeuristic::compare_function);
     std::srand(std::time(0));
-    int randPage = rand()%(groupSize+1);
+    int randPage = rand()%(groupSize);
     return pagesList[randPage][0];
 }
 
