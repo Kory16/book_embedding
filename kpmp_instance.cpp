@@ -46,6 +46,12 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 				instance->adjacencyList[b].push_back(a);
 				instance->adjacencyMatrix[a][b] = true;
 				instance->adjacencyMatrix[b][a] = true;
+
+                instance->edgesList.push_back(vector<int>());
+                instance->edgesList.back().push_back(a);
+                instance->edgesList.back().push_back(b);
+                instance->edgesList.back().push_back(-1);
+                instance->edgesList.back().push_back(abs(b-a));
 			}
 		}
 
@@ -56,6 +62,8 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 			auto last = std::unique(instance->adjacencyList[i].begin(), instance->adjacencyList[i].end());
 			instance->adjacencyList[i].erase(last, instance->adjacencyList[i].end());
 		}
+
+        sort(instance->edgesList.begin(), instance->edgesList.end(), KPMPInstance::compare_function);
 	}
 	else {
 		cerr << "Unable to open file"; 
@@ -66,6 +74,6 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 }
 
 int main() {
-    KPMPInstance::readInstance("/home/relyf/daten/ADS/teaching/heu_opt/ws15/book_embedding/instances/automatic-1.txt");
+    KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
     return 0;
 }

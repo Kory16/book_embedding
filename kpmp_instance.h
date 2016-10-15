@@ -4,6 +4,8 @@
 
 #include <string>
 #include <vector>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,7 +15,7 @@ private:
 	unsigned int numVertices;
 	vector<vector<unsigned int> > adjacencyList;
 	bool **adjacencyMatrix;
-
+    vector< vector<int> > edgesList;
 	KPMPInstance(){}
 
 public:
@@ -33,6 +35,10 @@ public:
 		return numVertices;
 	}
 
+    vector<vector<int> > getEdgesList() const{
+        return edgesList;
+    }
+
 	vector<vector<unsigned int> > getAdjacencyList() const {
 		return adjacencyList;
 	}
@@ -40,6 +46,10 @@ public:
 	bool** getAdjacencyMatrix() const {
 		return adjacencyMatrix;
 	}
+
+    static bool compare_function (vector<int> i,vector<int> j){
+        return (i[3]>j[3]);
+    }
 };
 
 #endif /* INSTANCE_READER_H_ */
