@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <ctime>
 #include "deterministicconstructionheuristic.h"
 #include "kpmp_solution_writer.h"
 
@@ -17,10 +18,11 @@ private:
 	unsigned int numVertices;
 	vector<vector<unsigned int> > adjacencyList;
 	bool **adjacencyMatrix;
-    vector< vector<int> > edgesList;
 	KPMPInstance(){}
 
 public:
+    vector< vector<int> > edgesList;
+
 	static KPMPInstance* readInstance(string filename);
 
 	~KPMPInstance() {
@@ -37,7 +39,7 @@ public:
 		return numVertices;
 	}
 
-    vector<vector<int> > getEdgesList() const{
+    vector<vector<int> > getEdgesList(){
         return edgesList;
     }
 

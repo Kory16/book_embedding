@@ -14,13 +14,13 @@ class ConstructionHeuristic
 public:
     ConstructionHeuristic();
 
-    vector< vector<int> > calculatePages(vector< vector<int> > edgesList, unsigned int K);
+    int calculatePages(vector< vector<int> > & edgesList, unsigned int K, int randomnessCoeff = 0);
 
 private:
 
     unsigned int countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum);
 
-    unsigned int pageSelection(vector<vector<unsigned int> > pagesList, int groupSize=1);
+    vector<unsigned int> pageSelection(vector<vector<unsigned int> > pagesList, int groupSize=1);
 
     static bool compare_function (vector<unsigned int> i,vector<unsigned int> j){
         return (i[1]<j[1]);

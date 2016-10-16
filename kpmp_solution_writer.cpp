@@ -9,6 +9,8 @@ void KPMPSolutionWriter::write(string path) const {
 }
 
 void KPMPSolutionWriter::write(ostream &out) const {
+    out << "Number of crossings: "<<crossingsNumber<<endl;
+    out << "Elapsed time: "<<elapsedTime<<" [s]"<<endl;
 	out << spineOrder.size() << endl;
 	out << K << endl;	
 	

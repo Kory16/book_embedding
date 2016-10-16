@@ -76,11 +76,19 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 int main() {
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
     ConstructionHeuristic dch;
-    vector< vector<int> > result = dch.calculatePages(instance->getEdgesList(), instance->getK());
+
+    clock_t begin = clock();
+    int result = dch.calculatePages(instance->edgesList, instance->getK(), 100);
+    clock_t end = clock();
+
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
     KPMPSolutionWriter writer(instance->getK());
-    for(int i=0; i<result.size(); i++){
-        writer.addEdgeOnPage(result[i][0], result[i][1], result[i][2]);
+    for(int i=0; i<instance->getEdgesList().size(); i++){
+        writer.addEdgeOnPage(instance->getEdgesList()[i][0], instance->getEdgesList()[i][1], instance->getEdgesList()[i][2]);
     }
+    writer.setCrossingsNum(result);
+    writer.setElapsedTime(elapsed_secs);
     writer.write("/home/magda/instances/result.txt");
     return 0;
 }

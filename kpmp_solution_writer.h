@@ -23,6 +23,8 @@ private:
 	unsigned int K = 0;
 	vector<unsigned int> spineOrder;
 	vector<PageEntry*> edgePartition;
+    int crossingsNumber = 0;
+    double elapsedTime = 0;
 	
 public:
 	KPMPSolutionWriter(unsigned int K) {
@@ -37,6 +39,14 @@ public:
 	void setSpineOrder(vector<unsigned int> spineOrder) {
 		this->spineOrder = spineOrder;
 	}
+
+    void setCrossingsNum(int val){
+        this->crossingsNumber = val;
+    }
+
+    void setElapsedTime(double val){
+        this->elapsedTime = val;
+    }
 	
 	void addEdgeOnPage(unsigned int vertexA, unsigned int vertexB, unsigned int page) {
 		edgePartition.push_back(new PageEntry(min(vertexA, vertexB), max(vertexA, vertexB), page));
