@@ -74,13 +74,13 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 }
 
 int main() {
-    KPMPInstance* instance = KPMPInstance::readInstance("/home/kory/books-data/automatic-1.txt");
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
     ConstructionHeuristic dch;
     vector< vector<int> > result = dch.calculatePages(instance->getEdgesList(), instance->getK());
     KPMPSolutionWriter writer(instance->getK());
     for(int i=0; i<result.size(); i++){
         writer.addEdgeOnPage(result[i][0], result[i][1], result[i][2]);
     }
-    writer.write("/home/kory/books-data/result.txt");
+    writer.write("/home/magda/instances/result.txt");
     return 0;
 }
