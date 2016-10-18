@@ -30,11 +30,16 @@ public:
     }
 
 private:
-    vector< vector <int> > edgesListWithPages;
-    map <int, int> vertexOrder; // vertex numer: vertex position
+    vector< vector <int> > edgesListWithPages; // [ [start verte, end vertex, page, edge length],..]
+    map <int, int> vertexOrder; // {vertex numer: vertex position, ... }
 
-    void setVertexOrder(vector<vector<unsigned int> > &adjacencyList, int numVertices);
-    void DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList, int numVertices);
+    // calculates verte order using DFS
+    void setVertexOrder(vector<vector<unsigned int> > &adjacencyList);
+
+    // implementation of DFS
+    void DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList);
+
+    // calcualtes length of edges and then sorts them, result is written in this-> edgesListWithPages
     void calculateEdgesLenAndSort(vector< vector<int> > & edgesList);
 
     unsigned int countCrossings(vector< vector<int> >::iterator begin, vector< vector<int> >::iterator end, int pageNum);

@@ -5,8 +5,9 @@ ConstructionHeuristic::ConstructionHeuristic()
 }
 
 int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff){
-    setVertexOrder(adjacencyList, numVertices);
+    setVertexOrder(adjacencyList);
     calculateEdgesLenAndSort(edgesList);
+
     this->edgesListWithPages[0][2] = 0;
     int crossings = 0;
     int groupSize = min(max(int(randomnessCoeff*K/100), 1), int(K));
@@ -54,6 +55,8 @@ unsigned int ConstructionHeuristic::countCrossings(vector< vector<int> >::iterat
     unsigned int crossings = 0;
     int vj1 = min(end->at(0), end->at(1));
     int vj2 = max(end->at(0), end->at(1));
+
+    // for all edges on the page, count how much crossing will be caused by adding a new edge
     for(unsigned int i = 0; i<edgesOnPage.size(); i++){
         int vi1 = min(edgesOnPage[i][0], edgesOnPage[i][1]);
         int vi2 = max(edgesOnPage[i][0], edgesOnPage[i][1]);
@@ -65,33 +68,37 @@ unsigned int ConstructionHeuristic::countCrossings(vector< vector<int> >::iterat
     return crossings;
 }
 
-void ConstructionHeuristic::setVertexOrder(vector<vector<unsigned int> > &adjacencyList, int numVertices){
-    bool *visited = new bool[numVertices];
-    for (int i = 0; i < numVertices; i++)
+void ConstructionHeuristic::setVertexOrder(vector<vector<unsigned int> > &adjacencyList){
+    // preapre table for DFS to mark which edges were visited
+    bool *visited = new bool[adjacencyList.size()];
+    for (int i = 0; i < adjacencyList.size(); i++)
         visited[i] = false;
 
+    // find vertex with maximum degree
     int maxVertex = 0;
     int maxVertexDegree = adjacencyList[0].size();
-    for(int i=1; i<numVertices; i++){
+    for(int i=1; i<adjacencyList.size(); i++){
         if(maxVertexDegree<adjacencyList[i].size()){
             maxVertex = i;
             maxVertexDegree = adjacencyList[i].size();
         }
     }
 
-    DFS(maxVertex, visited, adjacencyList, numVertices);
+    // start DFS with vertex with maximum degree
+    DFS(maxVertex, visited, adjacencyList);
 }
 
-void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList, int numVertices){
+void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList){
+    // mark vertice as visited
     visited[v] = true;
+    // assigne position of the current vertice
     this->vertexOrder[v] = this->vertexOrder.size();
-    if(this->vertexOrder.size()<numVertices){
-        for(auto i = adjacencyList[v].end(); i!=adjacencyList[v].begin(); --i){
-            if(!visited[*(i-1)]){
-                DFS(*(i-1), visited, adjacencyList, numVertices);
-            }
-        }
 
+    //iterate over all connected vertices, starting form the farthest
+    for(auto i = adjacencyList[v].end(); i!=adjacencyList[v].begin(); --i){
+        if(!visited[*(i-1)]){
+            DFS(*(i-1), visited, adjacencyList);
+        }
     }
 
 }
@@ -104,7 +111,7 @@ void ConstructionHeuristic::calculateEdgesLenAndSort(vector< vector<int> > & edg
         this->edgesListWithPages.back().push_back(begin);
         this->edgesListWithPages.back().push_back(end);
         this->edgesListWithPages.back().push_back(-1); // for page assigment
-        this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end]));
+        this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end])); // length of the edge
     }
     sort(edgesListWithPages.begin(), edgesListWithPages.end(), ConstructionHeuristic::compare_edges_function);
 }
