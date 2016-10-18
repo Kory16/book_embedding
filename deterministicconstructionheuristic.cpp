@@ -92,7 +92,7 @@ void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned in
     // mark vertice as visited
     visited[v] = true;
     // assigne position of the current vertice
-    this->vertexOrder[v] = this->vertexOrder.size();
+    this->vertexOrder[v] = this->vertexOrder.size()-1;
 
     //iterate over all connected vertices, starting form the farthest
     for(auto i = adjacencyList[v].end(); i!=adjacencyList[v].begin(); --i){
@@ -114,4 +114,15 @@ void ConstructionHeuristic::calculateEdgesLenAndSort(vector< vector<int> > & edg
         this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end])); // length of the edge
     }
     sort(edgesListWithPages.begin(), edgesListWithPages.end(), ConstructionHeuristic::compare_edges_function);
+}
+
+vector <unsigned int> ConstructionHeuristic::getVerteOrder(){
+    vector <unsigned int> result;
+    for(int i=0; i<vertexOrder.size(); ++i){
+        result.push_back(0);
+    }
+    for(auto it=vertexOrder.begin(); it!=vertexOrder.end(); ++it){
+        result[it->second] = it->first;
+    }
+    return result;
 }

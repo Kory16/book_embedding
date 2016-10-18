@@ -21,13 +21,7 @@ public:
         return edgesListWithPages;
     }
 
-    vector <unsigned int> getVerteOrder(){
-        vector <unsigned int> result;
-        for(auto it=vertexOrder.begin(); it!=vertexOrder.end(); ++it){
-            result.push_back(it->first);
-        }
-        return result;
-    }
+    vector <unsigned int> getVerteOrder();
 
 private:
     vector< vector <int> > edgesListWithPages; // [ [start verte, end vertex, page, edge length],..]
