@@ -50,8 +50,8 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
                 instance->edgesList.push_back(vector<int>());
                 instance->edgesList.back().push_back(a);
                 instance->edgesList.back().push_back(b);
-                instance->edgesList.back().push_back(-1);
-                instance->edgesList.back().push_back(abs(b-a));
+                //instance->edgesList.back().push_back(-1);
+                //instance->edgesList.back().push_back(abs(b-a));
 			}
 		}
 
@@ -63,7 +63,7 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 			instance->adjacencyList[i].erase(last, instance->adjacencyList[i].end());
 		}
 
-        sort(instance->edgesList.begin(), instance->edgesList.end(), KPMPInstance::compare_function);
+        //sort(instance->edgesList.begin(), instance->edgesList.end(), KPMPInstance::compare_function);
 	}
 	else {
 		cerr << "Unable to open file";
@@ -78,15 +78,17 @@ int main() {
     ConstructionHeuristic dch;
 
     clock_t begin = clock();
-    int result = dch.calculatePages(instance->edgesList, instance->getK(), 100);
+    int result = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
     clock_t end = clock();
 
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     KPMPSolutionWriter writer(instance->getK());
-    for(int i=0; i<instance->getEdgesList().size(); i++){
-        writer.addEdgeOnPage(instance->getEdgesList()[i][0], instance->getEdgesList()[i][1], instance->getEdgesList()[i][2]);
+    vector < vector<int> > resultEdges = dch.getEdgesWithPages();
+    for(int i=0; i<resultEdges.size(); i++){
+        writer.addEdgeOnPage(resultEdges[i][0], resultEdges[i][1], resultEdges[i][2]);
     }
+    writer.setSpineOrder(dch.getVerteOrder());
     writer.setCrossingsNum(result);
     writer.setElapsedTime(elapsed_secs);
     writer.write("/home/magda/instances/result.txt");

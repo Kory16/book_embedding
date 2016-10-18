@@ -4,25 +4,23 @@ ConstructionHeuristic::ConstructionHeuristic()
 {
 }
 
-int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, unsigned int K, int randomnessCoeff){
-    edgesList[0][2] = 0;
+int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff){
+    setVertexOrder(adjacencyList, numVertices);
+    calculateEdgesLenAndSort(edgesList);
+    this->edgesListWithPages[0][2] = 0;
     int crossings = 0;
     int groupSize = min(max(int(randomnessCoeff*K/100), 1), int(K));
-    for(int i=1; i<edgesList.size(); i++){
+    for(int i=1; i<this->edgesListWithPages.size(); i++){
         vector<vector<unsigned int> > CL;
-        //cout <<"Current EDGE: " <<edgesList.at(i)[0] << "," << edgesList.at(i)[1]<<endl;
         for(unsigned int j=0; j<K; j++){
-            //edgesList.at(i)[2]=j;
-            int crossings = countCrossings(edgesList.begin(), edgesList.begin()+i, j);
+            int crossings = countCrossings(this->edgesListWithPages.begin(), this->edgesListWithPages.begin()+i, j);
             CL.push_back(vector<unsigned int>());
             CL.back().push_back(j);
             CL.back().push_back(crossings);
         }
         vector<unsigned int> selectedPage = pageSelection(CL, groupSize);
-        edgesList[i][2] = selectedPage[0];
+        this->edgesListWithPages[i][2] = selectedPage[0];
         crossings += selectedPage[1];
-
-        //cout <<"Putting it to page " <<edgesList.at(i)[2] <<endl;
     }
     return crossings;
 }
@@ -40,17 +38,9 @@ int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, uns
 }*/
 
 vector<unsigned int> ConstructionHeuristic::pageSelection(vector<vector<unsigned int> > pagesList, int groupSize){
-    /*cout <<  "BEFORE: "<<endl;
-    for (int k = 0; k<pagesList.size();k++){
-        cout << pagesList[k][0] << " , "<<pagesList[k][1]<<endl;
-    }*/
     sort(pagesList.begin(), pagesList.end(), ConstructionHeuristic::compare_function);
     std::srand(std::time(0));
     int randPage = std::rand() % groupSize;
-    /*for (int k = 0; k<pagesList.size();k++){
-        cout << pagesList[k][0] << " , "<<pagesList[k][1]<<endl;
-    }
-    cout << pagesList[randPage][0] << endl;*/
     return pagesList[randPage];
 }
 
@@ -73,4 +63,48 @@ unsigned int ConstructionHeuristic::countCrossings(vector< vector<int> >::iterat
     }
 
     return crossings;
+}
+
+void ConstructionHeuristic::setVertexOrder(vector<vector<unsigned int> > &adjacencyList, int numVertices){
+    bool *visited = new bool[numVertices];
+    for (int i = 0; i < numVertices; i++)
+        visited[i] = false;
+
+    int maxVertex = 0;
+    int maxVertexDegree = adjacencyList[0].size();
+    for(int i=1; i<numVertices; i++){
+        if(maxVertexDegree<adjacencyList[i].size()){
+            maxVertex = i;
+            maxVertexDegree = adjacencyList[i].size();
+        }
+    }
+
+    DFS(maxVertex, visited, adjacencyList, numVertices);
+}
+
+void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList, int numVertices){
+    visited[v] = true;
+    this->vertexOrder[v] = this->vertexOrder.size();
+    if(this->vertexOrder.size()<numVertices){
+        for(auto i = adjacencyList[v].begin(); i!=adjacencyList[v].end(); ++i){
+            if(!visited[*i]){
+                DFS(*i, visited, adjacencyList, numVertices);
+            }
+        }
+
+    }
+
+}
+
+void ConstructionHeuristic::calculateEdgesLenAndSort(vector< vector<int> > & edgesList){
+    for(auto it = edgesList.begin(); it!=edgesList.end(); it++){
+        this->edgesListWithPages.push_back(vector<int>());
+        int begin = it->at(0);
+        int end = it->at(1);
+        this->edgesListWithPages.back().push_back(begin);
+        this->edgesListWithPages.back().push_back(end);
+        this->edgesListWithPages.back().push_back(-1); // for page assigment
+        this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end]));
+    }
+    sort(edgesListWithPages.begin(), edgesListWithPages.end(), ConstructionHeuristic::compare_edges_function);
 }

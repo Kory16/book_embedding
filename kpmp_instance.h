@@ -16,12 +16,12 @@ class KPMPInstance {
 private: 
 	unsigned int K;
 	unsigned int numVertices;
-	vector<vector<unsigned int> > adjacencyList;
 	bool **adjacencyMatrix;
 	KPMPInstance(){}
 
 public:
     vector< vector<int> > edgesList;
+    vector<vector<unsigned int> > adjacencyList;
 
 	static KPMPInstance* readInstance(string filename);
 
@@ -51,9 +51,9 @@ public:
 		return adjacencyMatrix;
 	}
 
-    static bool compare_function (vector<int> i,vector<int> j){
+    /*static bool compare_function (vector<int> i,vector<int> j){
         return (i[3]>j[3]);
-    }
+    }*/
 };
 
 #endif /* INSTANCE_READER_H_ */
