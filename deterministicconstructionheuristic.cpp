@@ -86,9 +86,9 @@ void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned in
     visited[v] = true;
     this->vertexOrder[v] = this->vertexOrder.size();
     if(this->vertexOrder.size()<numVertices){
-        for(auto i = adjacencyList[v].begin(); i!=adjacencyList[v].end(); ++i){
-            if(!visited[*i]){
-                DFS(*i, visited, adjacencyList, numVertices);
+        for(auto i = adjacencyList[v].end(); i!=adjacencyList[v].begin(); --i){
+            if(!visited[*(i-1)]){
+                DFS(*(i-1), visited, adjacencyList, numVertices);
             }
         }
 
