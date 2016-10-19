@@ -95,9 +95,14 @@ void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned in
     this->vertexOrder[v] = this->vertexOrder.size()-1;
 
     //iterate over all connected vertices, starting form the farthest
-    for(auto i = adjacencyList[v].end(); i!=adjacencyList[v].begin(); --i){
-        if(!visited[*(i-1)]){
-            DFS(*(i-1), visited, adjacencyList);
+    map<int, int> connectedVertices;
+    for(auto i = adjacencyList[v].begin(); i!=adjacencyList[v].end(); ++i){
+        connectedVertices[abs(int(*i) - v)] = *i;
+    }
+
+    for(auto i = connectedVertices.rbegin(); i!=connectedVertices.rend(); ++i){
+        if(!visited[i->second]){
+            DFS(i->second, visited, adjacencyList);
         }
     }
 
