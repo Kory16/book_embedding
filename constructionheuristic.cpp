@@ -1,4 +1,4 @@
-#include "deterministicconstructionheuristic.h"
+#include "constructionheuristic.h"
 
 ConstructionHeuristic::ConstructionHeuristic()
 {
@@ -53,13 +53,13 @@ unsigned int ConstructionHeuristic::countCrossings(vector< vector<int> >::iterat
         edgesOnPage.push_back(*begin);
     }
     unsigned int crossings = 0;
-    int vj1 = min(end->at(0), end->at(1));
-    int vj2 = max(end->at(0), end->at(1));
+    int vj1 = min(this->vertexOrder[end->at(0)], this->vertexOrder[end->at(1)]);
+    int vj2 = max(this->vertexOrder[end->at(0)], this->vertexOrder[end->at(1)]);
 
     // for all edges on the page, count how much crossing will be caused by adding a new edge
     for(unsigned int i = 0; i<edgesOnPage.size(); i++){
-        int vi1 = min(edgesOnPage[i][0], edgesOnPage[i][1]);
-        int vi2 = max(edgesOnPage[i][0], edgesOnPage[i][1]);
+        int vi1 = min(this->vertexOrder[edgesOnPage[i][0]], this->vertexOrder[edgesOnPage[i][1]]);
+        int vi2 = max(this->vertexOrder[edgesOnPage[i][0]], this->vertexOrder[edgesOnPage[i][1]]);
         if((vi1<vj1 && vj1<vi2 && vi2<vj2) || (vj1<vi1 && vi1<vj2 && vj2<vi2)){
             crossings++;
         }

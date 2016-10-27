@@ -7,6 +7,7 @@
 #include <cmath>
 #include <algorithm>
 #include <ctime>
+#include <map>
 #include "constructionheuristic.h"
 #include "kpmp_solution_writer.h"
 
@@ -17,11 +18,14 @@ private:
 	unsigned int K;
 	unsigned int numVertices;
 	bool **adjacencyMatrix;
-	KPMPInstance(){}
 
 public:
+    KPMPInstance(){}
     vector< vector<int> > edgesList;
     vector<vector<unsigned int> > adjacencyList;
+    map <int, int> vertexOrder;
+    int crossings;
+    vector <unsigned int> getVerteOrder();
 
 	static KPMPInstance* readInstance(string filename);
 

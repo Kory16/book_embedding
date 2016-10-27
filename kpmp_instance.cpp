@@ -73,8 +73,19 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 	return instance;
 }
 
+vector <unsigned int> KPMPInstance::getVerteOrder(){
+    vector <unsigned int> result;
+    for(int i=0; i<vertexOrder.size(); ++i){
+        result.push_back(0);
+    }
+    for(auto it=vertexOrder.begin(); it!=vertexOrder.end(); ++it){
+        result[it->second] = it->first;
+    }
+    return result;
+}
+
 int main() {
-    string instanceNum = "10";
+    string instanceNum = "1";
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt");
     ConstructionHeuristic dch;
 

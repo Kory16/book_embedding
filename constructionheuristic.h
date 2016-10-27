@@ -23,6 +23,10 @@ public:
 
     vector <unsigned int> getVerteOrder();
 
+    map <int, int> getVertexMap(){
+        return this->vertexOrder;
+    }
+
 private:
     vector< vector <int> > edgesListWithPages; // [ [start verte, end vertex, page, edge length],..]
     map <int, int> vertexOrder; // {vertex numer: vertex position, ... }
