@@ -74,7 +74,8 @@ KPMPInstance* KPMPInstance::readInstance(string filename) {
 }
 
 int main() {
-    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-1.txt");
+    string instanceNum = "10";
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt");
     ConstructionHeuristic dch;
 
     clock_t begin = clock();
@@ -91,6 +92,6 @@ int main() {
     writer.setSpineOrder(dch.getVerteOrder());
     writer.setCrossingsNum(result);
     writer.setElapsedTime(elapsed_secs);
-    writer.write("/home/magda/instances/result.txt");
+    writer.write("/home/magda/instances/result" + instanceNum + ".txt");
     return 0;
 }
