@@ -86,8 +86,9 @@ vector <unsigned int> KPMPInstance::getVerteOrder(){
 
 int main() {
     string instanceNum = "1";
-    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt");
-    ConstructionHeuristic dch;
+    //KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
+	KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
+	ConstructionHeuristic dch;
 
     clock_t begin = clock();
     int result = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
@@ -103,6 +104,8 @@ int main() {
     writer.setSpineOrder(dch.getVerteOrder());
     writer.setCrossingsNum(result);
     writer.setElapsedTime(elapsed_secs);
-    writer.write("/home/magda/instances/result" + instanceNum + ".txt");
+    //writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
+	writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
+	getchar();
     return 0;
 }

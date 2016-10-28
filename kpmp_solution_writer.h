@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -49,7 +50,7 @@ public:
     }
 	
 	void addEdgeOnPage(unsigned int vertexA, unsigned int vertexB, unsigned int page) {
-		edgePartition.push_back(new PageEntry(min(vertexA, vertexB), max(vertexA, vertexB), page));
+		edgePartition.push_back(new PageEntry(std::min(vertexA, vertexB), std::max(vertexA, vertexB), page));
 	}
 	
 	void write(string path) const;
