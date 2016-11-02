@@ -4,6 +4,9 @@
 #include <algorithm>
 #include "kpmp_instance.h"
 #include "kpmp_solution_writer.h"
+#include "localsearch.h"
+#include "neighbourhood_vertex.h"
+#include "randomstepfun.h"
 
 KPMPInstance* KPMPInstance::readInstance(string filename) {
 	// read in instance
@@ -90,12 +93,19 @@ int main() {
 	KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
 	ConstructionHeuristic dch;
 
+	//generating initial guess
     clock_t begin = clock();
     int result = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
     clock_t end = clock();
-
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
+	//local search
+	//Neighbourhood_vertex nv = Neighbourhood_vertex(*instance,dch.getVerteOrder());
+	//RandomStepFun & rnd = RandomStepFun(*instance,nv);
+	//LocalSearch ls(*instance);
+	//ls.calculatePages(nv, rnd);
+
+	//writing solution
     KPMPSolutionWriter writer(instance->getK());
     vector < vector<int> > resultEdges = dch.getEdgesWithPages();
     for(int i=0; i<resultEdges.size(); i++){
@@ -106,6 +116,6 @@ int main() {
     writer.setElapsedTime(elapsed_secs);
     //writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
 	writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
-	getchar();
+	//getchar();
     return 0;
 }

@@ -1,10 +1,11 @@
 #include "stepfunction.h"
 
-StepFunction::StepFunction()
+StepFunction::StepFunction(KPMPInstance& initial, Neighbourhood &n)
 {
-
+	StepFunction::initial = initial;
 }
 
-KPMPInstance& StepFunction::getNeighbour(KPMPInstance& initial, Neighbourhood *n){
-    return initial;
+KPMPInstance& StepFunction::getNeighbour(Neighbourhood &n){
+	return initial;
+   
 }

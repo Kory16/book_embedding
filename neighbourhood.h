@@ -11,7 +11,7 @@ class Neighbourhood
 public:
     Neighbourhood();
 
-    virtual vector<KPMPInstance> & getAllNeighbours (KPMPInstance & x)=0;
+    virtual vector<KPMPInstance> getAllNeighbours (KPMPInstance & x)=0;
     virtual KPMPInstance& next(KPMPInstance& x)=0;
 
     void setSize(int size){

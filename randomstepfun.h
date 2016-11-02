@@ -8,9 +8,12 @@
 
 class RandomStepFun : public StepFunction
 {
+
+	vector<KPMPInstance> neighbours;
+
 public:
-    RandomStepFun();
-    KPMPInstance& getNeighbour(KPMPInstance& initial, Neighbourhood *n);
+    RandomStepFun(KPMPInstance& initial, Neighbourhood &n);
+    KPMPInstance& getNeighbour(Neighbourhood &n);
 };
 
 #endif // RANDOMSTEPFUN_H

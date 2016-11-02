@@ -1,12 +1,12 @@
 #include "randomstepfun.h"
 
-RandomStepFun::RandomStepFun()
+RandomStepFun::RandomStepFun(KPMPInstance& initial, Neighbourhood &n) : StepFunction(initial,n)
 {
-
+	RandomStepFun::neighbours = n.getAllNeighbours(initial);
 }
 
-KPMPInstance& RandomStepFun::getNeighbour(KPMPInstance& initial, Neighbourhood *n){
-    std::vector<KPMPInstance> neighbours = n->getAllNeighbours(initial);
+KPMPInstance& RandomStepFun::getNeighbour(Neighbourhood &n)
+{    
     std::srand(std::time(0));
-    return neighbours[std::rand() % neighbours.size()];
+    return RandomStepFun::neighbours[std::rand() % neighbours.size()];
 }

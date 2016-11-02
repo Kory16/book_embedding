@@ -5,9 +5,12 @@
 
 class FirstImprovement : public StepFunction
 {
+	KPMPInstance initial;
+	vector<KPMPInstance> neighbours;
+	int crossings;
 public:
-    FirstImprovement();
-    KPMPInstance& getNeighbour(KPMPInstance& initial, Neighbourhood *n);
+    FirstImprovement(KPMPInstance& initial, Neighbourhood &n);
+    KPMPInstance& getNeighbour(Neighbourhood &n);
 };
 
 #endif // FIRST_IMPROVEMENT_H

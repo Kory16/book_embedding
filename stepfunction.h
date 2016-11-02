@@ -6,10 +6,10 @@
 
 class StepFunction
 {
+	KPMPInstance initial;
 public:
-    StepFunction();
-
-    virtual KPMPInstance& getNeighbour(KPMPInstance& initial, Neighbourhood *n)=0;
+    StepFunction(KPMPInstance& initial, Neighbourhood &n);
+    virtual KPMPInstance& getNeighbour(Neighbourhood &n)=0;
 };
 
 #endif // STEPFUNCTION_H

@@ -11,15 +11,15 @@
 
 class LocalSearch
 {
+
+	KPMPInstance initial;
+
 public:
-    LocalSearch();
+    LocalSearch(KPMPInstance & initial);
 
-    KPMPInstance & calculatePages(KPMPInstance & initial, Neighbourhood *neighbourhood, StepFunction *stepFun);
-
-
+    KPMPInstance calculatePages(Neighbourhood &neighbourhood, StepFunction &stepFun);
 private:
-
-
+	
 };
 
 #endif // LOCALSEARCH_H
