@@ -104,8 +104,10 @@ int main() {
 
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
     RandomStepFun* rnd = new RandomStepFun();
+    BestImprovement* bst = new BestImprovement();
+    FirstImprovement* frs = new FirstImprovement();
     LocalSearch ls(solution);
-    solution = ls.calculatePages(npc, rnd);
+    solution = ls.calculatePages(npc, bst);
 
     end = clock();
     double elapsed_secs_local = double(end - begin) / CLOCKS_PER_SEC;

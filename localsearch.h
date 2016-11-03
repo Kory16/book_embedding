@@ -16,6 +16,7 @@ class LocalSearch
 
 public:
     LocalSearch(Solution* initial);
+    ~LocalSearch();
 
     Solution* calculatePages(Neighbourhood *neighbourhood, StepFunction *stepFun);
 private:

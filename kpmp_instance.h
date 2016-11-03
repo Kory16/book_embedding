@@ -13,6 +13,8 @@
 #include "solution.h"
 #include "localsearch.h"
 #include "NeighbourhoodPageChange.h"
+#include "bestimprovement.h"
+#include "first_improvement.h"
 #include "randomstepfun.h"
 
 using namespace std;
