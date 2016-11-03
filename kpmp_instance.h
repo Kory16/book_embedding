@@ -10,6 +10,10 @@
 #include <map>
 #include "constructionheuristic.h"
 #include "kpmp_solution_writer.h"
+#include "solution.h"
+#include "localsearch.h"
+#include "NeighbourhoodPageChange.h"
+#include "randomstepfun.h"
 
 using namespace std;
 

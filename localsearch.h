@@ -7,17 +7,17 @@
 
 #include "neighbourhood.h"
 #include "stepfunction.h"
-#include "kpmp_instance.h"
+#include "solution.h"
 
 class LocalSearch
 {
 
-	KPMPInstance initial;
+    Solution * initial;
 
 public:
-    LocalSearch(KPMPInstance & initial);
+    LocalSearch(Solution* initial);
 
-    KPMPInstance calculatePages(Neighbourhood &neighbourhood, StepFunction &stepFun);
+    Solution* calculatePages(Neighbourhood *neighbourhood, StepFunction *stepFun);
 private:
 	
 };

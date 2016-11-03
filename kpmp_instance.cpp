@@ -4,9 +4,6 @@
 #include <algorithm>
 #include "kpmp_instance.h"
 #include "kpmp_solution_writer.h"
-#include "localsearch.h"
-#include "neighbourhood_vertex.h"
-#include "randomstepfun.h"
 
 KPMPInstance* KPMPInstance::readInstance(string filename) {
 	// read in instance
@@ -89,13 +86,13 @@ vector <unsigned int> KPMPInstance::getVerteOrder(){
 
 int main() {
     string instanceNum = "1";
-    //KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
-	KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
+    //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
 	ConstructionHeuristic dch;
 
 	//generating initial guess
     clock_t begin = clock();
-    int result = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
+    Solution* solution = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
@@ -105,17 +102,24 @@ int main() {
 	//LocalSearch ls(*instance);
 	//ls.calculatePages(nv, rnd);
 
+    NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
+    RandomStepFun* rnd = new RandomStepFun();
+    LocalSearch ls(solution);
+    solution = ls.calculatePages(npc, rnd);
+
+    end = clock();
+    double elapsed_secs_local = double(end - begin) / CLOCKS_PER_SEC;
+
 	//writing solution
     KPMPSolutionWriter writer(instance->getK());
-    vector < vector<int> > resultEdges = dch.getEdgesWithPages();
-    for(int i=0; i<resultEdges.size(); i++){
-        writer.addEdgeOnPage(resultEdges[i][0], resultEdges[i][1], resultEdges[i][2]);
+    for(int i=0; i<solution->edgesListWithPages.size(); i++){
+        writer.addEdgeOnPage(solution->edgesListWithPages[i][0], solution->edgesListWithPages[i][1], solution->edgesListWithPages[i][2]);
     }
-    writer.setSpineOrder(dch.getVerteOrder());
-    writer.setCrossingsNum(result);
+    writer.setSpineOrder(solution->getVerteOrder());
+    writer.setCrossingsNum(solution->crossings);
     writer.setElapsedTime(elapsed_secs);
-    //writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
-	writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
+    writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
+    //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
 	//getchar();
     return 0;
 }

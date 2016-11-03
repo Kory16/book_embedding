@@ -2,18 +2,18 @@
 #define RANDOMSTEPFUN_H
 
 #include "stepfunction.h"
-#include "kpmp_instance.h"
+#include "solution.h"
 #include <ctime>
 #include <vector>
 
 class RandomStepFun : public StepFunction
 {
 
-	vector<KPMPInstance> neighbours;
+    //vector<KPMPInstance> neighbours;
 
 public:
-    RandomStepFun(KPMPInstance& initial, Neighbourhood &n);
-    KPMPInstance& getNeighbour(Neighbourhood &n);
+    RandomStepFun();
+    Solution * getNeighbour(Solution *initial, Neighbourhood* n);
 };
 
 #endif // RANDOMSTEPFUN_H

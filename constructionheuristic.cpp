@@ -4,9 +4,10 @@ ConstructionHeuristic::ConstructionHeuristic()
 {
 }
 
-int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff){
+Solution* ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff){
     setVertexOrder(adjacencyList);
     calculateEdgesLenAndSort(edgesList);
+    Solution* solution = new Solution(K, numVertices);
 
     this->edgesListWithPages[0][2] = 0;
     int crossings = 0;
@@ -23,7 +24,10 @@ int ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesList, vec
         this->edgesListWithPages[i][2] = selectedPage[0];
         crossings += selectedPage[1];
     }
-    return crossings;
+    solution->crossings = crossings;
+    solution->vertexOrder = this->vertexOrder;
+    solution->edgesListWithPages = this->edgesListWithPages;
+    return solution;
 }
 
 /*unsigned int ConstructionHeuristic::choseMinimumCrossingPage(vector< unsigned int> pagesList){
@@ -118,15 +122,4 @@ void ConstructionHeuristic::calculateEdgesLenAndSort(vector< vector<int> > & edg
         this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end])); // length of the edge
     }
     sort(edgesListWithPages.begin(), edgesListWithPages.end(), ConstructionHeuristic::compare_edges_function);
-}
-
-vector <unsigned int> ConstructionHeuristic::getVerteOrder(){
-    vector <unsigned int> result;
-    for(int i=0; i<vertexOrder.size(); ++i){
-        result.push_back(0);
-    }
-    for(auto it=vertexOrder.begin(); it!=vertexOrder.end(); ++it){
-        result[it->second] = it->first;
-    }
-    return result;
 }

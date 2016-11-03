@@ -7,6 +7,7 @@
 #include <ctime>
 #include <iostream>
 #include <map>
+#include "solution.h"
 
 using namespace std;
 
@@ -15,16 +16,10 @@ class ConstructionHeuristic
 public:
     ConstructionHeuristic();
 
-    int calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff = 0);
+    Solution* calculatePages(vector< vector<int> > & edgesList, vector<vector<unsigned int> > &adjacencyList, unsigned int K, int numVertices, int randomnessCoeff = 0);
 
     vector< vector <int> > getEdgesWithPages(){
         return edgesListWithPages;
-    }
-
-    vector <unsigned int> getVerteOrder();
-
-    map <int, int> getVertexMap(){
-        return this->vertexOrder;
     }
 
 private:

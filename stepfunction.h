@@ -2,14 +2,14 @@
 #define STEPFUNCTION_H
 
 #include "neighbourhood.h"
-#include "kpmp_instance.h"
+#include "solution.h"
 
 class StepFunction
 {
-	KPMPInstance initial;
+
 public:
-    StepFunction(KPMPInstance& initial, Neighbourhood &n);
-    virtual KPMPInstance& getNeighbour(Neighbourhood &n)=0;
+    StepFunction();
+    virtual Solution* getNeighbour(Solution* initial, Neighbourhood *n)=0;
 };
 
 #endif // STEPFUNCTION_H
