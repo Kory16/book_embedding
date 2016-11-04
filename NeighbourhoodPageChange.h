@@ -17,8 +17,7 @@ public:
     Solution* getNeighbour(int num);
     void virtual setInstance(Solution* x);
 
-private:
-    int calcualteCrossingsOnPage(Solution* solution, int pageNum);
+
 };
 
 #endif // NEIGHBOURHOOD_PAGE_CHANGE_H

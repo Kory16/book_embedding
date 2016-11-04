@@ -1,17 +1,9 @@
 #include "neighbourhood_vertex.h"
 #include "constructionheuristic.h"
 
-Neighbourhood_vertex::Neighbourhood_vertex(vector<unsigned int> verteOrder,vector<vector<int>>edgesList, vector<vector<unsigned int> > adjacencyList, unsigned int K, int numVertices, int randomnessCoeff)
+Neighbourhood_vertex::Neighbourhood_vertex()
 {
-	Neighbourhood_vertex::edgesList = edgesList;
-	Neighbourhood_vertex::adjacencyList = adjacencyList;
-	Neighbourhood_vertex::K = K;
-	Neighbourhood_vertex::numVertices = numVertices;
-	for (int i = 0; i < Neighbourhood_vertex::numVertices; i++) {
-		Neighbourhood_vertex::vertexOrder.push_back(i);
-	}
-	Neighbourhood_vertex::setInitialVertexOrder(verteOrder);
-	Neighbourhood_vertex::calculateLists();
+    //Neighbourhood_vertex::calculateLists();
 }
 
 Solution * Neighbourhood_vertex::next()
@@ -22,13 +14,13 @@ Solution * Neighbourhood_vertex::next()
 
 void Neighbourhood_vertex::calculateNeighbourhoodSize()
 {
-	neighbourhoodSize = Neighbourhood_vertex::instance->vertexNum * (Neighbourhood_vertex::instance->vertexNum)-1;
+    neighbourhoodSize = instance->vertexNum * (instance->vertexNum-1);
 	neighbourhoodSize = neighbourhoodSize / 2; //to avoid calculating twice
 }
 
 Solution * Neighbourhood_vertex::getNeighbour(int num)
 {
-	int buffer = Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::first[num]];
+    /*int buffer = Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::first[num]];
 	Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::first[num]] = Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::second[num]];
 	Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::second[num]] = buffer;
 	Solution * result = new Solution(instance);
@@ -36,7 +28,27 @@ Solution * Neighbourhood_vertex::getNeighbour(int num)
 		Neighbourhood_vertex::vOrder.insert(std::pair< int,int>(i, Neighbourhood_vertex::verteOrder[i]));
 	}
 	result->vertexOrder = Neighbourhood_vertex::vOrder; //overwriting with new vertexorder
-	return result;
+    return result;*/
+
+    Solution * result = new Solution(instance);
+
+    int c = -1;
+    int x=0, y=1;
+    for(int i=0; i<instance->vertexNum && c!=num; i++){
+        for(int j=i+1; j<instance->vertexNum && c!=num; j++){
+            c++;
+            x=i;
+            y=j;
+        }
+    }
+
+    int tmp = result->vertexOrder[x];
+    result->vertexOrder[x] = result->vertexOrder[y];
+    result->vertexOrder[y] = tmp;
+
+    result->crossings = calculateCrossings(result);
+    return result;
+
 }
 
 void Neighbourhood_vertex::setInstance(Solution * x)
@@ -48,18 +60,14 @@ void Neighbourhood_vertex::setInstance(Solution * x)
 
 int Neighbourhood_vertex::calculateCrossings(Solution * solution)
 {
-	//really inefficient, lacks interative evaluation
-	ConstructionHeuristic cr;
-	solution = cr.calculatePages(Neighbourhood_vertex::edgesList,Neighbourhood_vertex::adjacencyList,Neighbourhood_vertex::K,Neighbourhood_vertex::numVertices,0);
-	return solution->crossings;
+    int crossings = 0;
+    for(int i=0; i<solution->pagesNum; ++i){
+        crossings+=this->calcualteCrossingsOnPage(solution, i);
+    }
+    return crossings;
 }
 
-void Neighbourhood_vertex::setInitialVertexOrder(vector<unsigned int> vertexOrder)
-{
-	Neighbourhood_vertex::verteOrder = verteOrder;
-}
-
-void Neighbourhood_vertex::calculateLists()
+/*void Neighbourhood_vertex::calculateLists()
 {
 	int count = Neighbourhood_vertex::numVertices;
 	int number_to_write = 1;
@@ -71,4 +79,4 @@ void Neighbourhood_vertex::calculateLists()
 		number_to_write++;
 		count--;
 	}
-}
+}*/

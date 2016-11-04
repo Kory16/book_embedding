@@ -14,18 +14,19 @@ public:
 
     //virtual vector<KPMPInstance> getAllNeighbours (KPMPInstance & x)=0;
     virtual Solution* next()=0;
-    int getNeighbourhoodSize(){
-        return neighbourhoodSize;
-    }
     virtual void calculateNeighbourhoodSize()=0;
     virtual Solution* getNeighbour(int num)=0;
+
+    void virtual setInstance(Solution* x){
+        instance = x;
+    }
 
     void setSize(int size){
         k=size;
     }
 
-    void virtual setInstance(Solution* x){
-        instance = x;
+    int getNeighbourhoodSize(){
+        return neighbourhoodSize;
     }
 
 protected:
@@ -33,6 +34,8 @@ protected:
     int counter;
     int neighbourhoodSize;
     Solution* instance;
+
+    int calcualteCrossingsOnPage(Solution* solution, int pageNum);
 };
 
 #endif // NEIGHBOURHOOD_H

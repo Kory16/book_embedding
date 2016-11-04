@@ -97,17 +97,16 @@ int main() {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
 	//local search Neighbourhood 1
-	Neighbourhood_vertex * nv = new Neighbourhood_vertex(instance->getVerteOrder(),instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 0);
-	RandomStepFun * rnd = new RandomStepFun();
-	LocalSearch ls(solution);
-	ls.calculatePages(nv, rnd);
-	//local search Neighbourhood 3
+    Neighbourhood_vertex * nv = new Neighbourhood_vertex();
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
+
     RandomStepFun* rnd = new RandomStepFun();
-	BestImprovement* bst = new BestImprovement();
-	FirstImprovement* frs = new FirstImprovement();
+    BestImprovement* bst = new BestImprovement();
+    FirstImprovement* frs = new FirstImprovement();
+
     LocalSearch ls(solution);
-    solution = ls.calculatePages(npc, rnd);
+    solution = ls.calculatePages(nv, bst);
+
 
     end = clock();
     double elapsed_secs_local = double(end - begin) / CLOCKS_PER_SEC;
