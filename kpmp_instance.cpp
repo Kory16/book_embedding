@@ -97,7 +97,7 @@ int main() {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
 	//local search Neighbourhood 1
-	Neighbourhood_vertex * nv = new Neighbourhood_vertex(instance->getVerteOrder(),instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 0);
+	Neighbourhood_vertex * nv = new Neighbourhood_vertex();
 	RandomStepFun * rnd = new RandomStepFun();
 	LocalSearch ls(solution);
 	ls.calculatePages(nv, rnd);
