@@ -1,17 +1,20 @@
 #include "first_improvement.h"
 
-FirstImprovement::FirstImprovement(KPMPInstance& initial, Neighbourhood &n) : StepFunction(initial, n)
+FirstImprovement::FirstImprovement()
 {
-	std::vector<KPMPInstance> neighbours = n.getAllNeighbours(initial);
-	FirstImprovement::crossings = initial.crossings;
 }
 
-KPMPInstance& FirstImprovement::getNeighbour(Neighbourhood &n){
+Solution* FirstImprovement::getNeighbour(Solution *initial, Neighbourhood* n){
     
-    for(auto it=neighbours.begin(); it!=neighbours.end(); ++it){
-        if(it->crossings < FirstImprovement::crossings){
-            return *it;
+    n->setInstance(initial);
+    int neighSize = n->getNeighbourhoodSize();
+    Solution* best = initial;
+    for(int i=0; i<neighSize; ++i){
+        Solution* next_solution = n->getNeighbour(i);
+        if(next_solution->crossings<best->crossings){
+            return next_solution;
         }
+        delete next_solution;
     }
-    return FirstImprovement::initial;
+    return best;
 }

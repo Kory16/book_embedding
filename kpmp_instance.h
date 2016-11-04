@@ -13,8 +13,10 @@
 #include "solution.h"
 #include "localsearch.h"
 #include "NeighbourhoodPageChange.h"
-#include "neighbourhood_vertex.h"
+#include "bestimprovement.h"
+#include "first_improvement.h"
 #include "randomstepfun.h"
+#include "neighbourhood_vertex.h"
 
 using namespace std;
 

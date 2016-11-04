@@ -5,10 +5,9 @@
 
 class BestImprovement : public StepFunction
 {
-	vector<KPMPInstance> neighbours;
 public:
-    BestImprovement(KPMPInstance& initial, Neighbourhood &n);
-    KPMPInstance& getNeighbour(Neighbourhood &n);
+    BestImprovement();
+    Solution * getNeighbour(Solution *initial, Neighbourhood* n);
 };
 
 #endif // BESTIMPROVEMENT_H
