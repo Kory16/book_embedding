@@ -85,7 +85,7 @@ vector <unsigned int> KPMPInstance::getVerteOrder(){
 }
 
 int main() {
-    string instanceNum = "1";
+    string instanceNum = "2";
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
     //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
 	ConstructionHeuristic dch;
@@ -97,15 +97,16 @@ int main() {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
 	//local search Neighbourhood 1
-    Neighbourhood_vertex * nv = new Neighbourhood_vertex();
+    //Neighbourhood_vertex * nv = new Neighbourhood_vertex();
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
+    NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
 
     RandomStepFun* rnd = new RandomStepFun();
     BestImprovement* bst = new BestImprovement();
     FirstImprovement* frs = new FirstImprovement();
 
     LocalSearch ls(solution);
-    solution = ls.calculatePages(nv, bst);
+    solution = ls.calculatePages(nvr, bst);
 
 
     end = clock();

@@ -17,6 +17,7 @@
 #include "first_improvement.h"
 #include "randomstepfun.h"
 #include "neighbourhood_vertex.h"
+#include "neighbourhoodvertexreplacement.h"
 
 using namespace std;
 
