@@ -26,6 +26,7 @@ private:
 	vector<PageEntry*> edgePartition;
     int crossingsNumber = 0;
     double elapsedTime = 0;
+    int iterations = 0;
 	
 public:
 	KPMPSolutionWriter(unsigned int K) {
@@ -52,6 +53,10 @@ public:
 	void addEdgeOnPage(unsigned int vertexA, unsigned int vertexB, unsigned int page) {
 		edgePartition.push_back(new PageEntry(std::min(vertexA, vertexB), std::max(vertexA, vertexB), page));
 	}
+
+    void setIterartions(int i){
+        iterations = i;
+    }
 	
 	void write(string path) const;
 	

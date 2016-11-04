@@ -8,6 +8,7 @@
 #include "neighbourhood.h"
 #include "stepfunction.h"
 #include "solution.h"
+#include <ctime>
 
 class LocalSearch
 {
@@ -19,7 +20,10 @@ public:
     ~LocalSearch();
 
     Solution* calculatePages(Neighbourhood *neighbourhood, StepFunction *stepFun);
+    int iteration;
+    clock_t elapsed_time;
 private:
+
 	
 };
 

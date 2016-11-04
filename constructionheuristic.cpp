@@ -90,6 +90,14 @@ void ConstructionHeuristic::setVertexOrder(vector<vector<unsigned int> > &adjace
 
     // start DFS with vertex with maximum degree
     DFS(maxVertex, visited, adjacencyList);
+
+    if(this->vertexOrder.size() != adjacencyList.size()){
+        for (int i = 0; i < adjacencyList.size(); i++){
+            if(!visited[i]){
+                this->vertexOrder[i] = this->vertexOrder.size()-1;
+            }
+        }
+    }
 }
 
 void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned int> > &adjacencyList){
@@ -119,7 +127,9 @@ void ConstructionHeuristic::calculateEdgesLenAndSort(vector< vector<int> > & edg
         this->edgesListWithPages.back().push_back(begin);
         this->edgesListWithPages.back().push_back(end);
         this->edgesListWithPages.back().push_back(-1); // for page assigment
-        this->edgesListWithPages.back().push_back(abs(this->vertexOrder[begin]-this->vertexOrder[end])); // length of the edge
+        int x = this->vertexOrder[begin];
+        int y=this->vertexOrder[end];
+        this->edgesListWithPages.back().push_back(abs(x-y)); // length of the edge
     }
     sort(edgesListWithPages.begin(), edgesListWithPages.end(), ConstructionHeuristic::compare_edges_function);
 }

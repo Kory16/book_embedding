@@ -13,7 +13,6 @@ public:
     Solution* next();
     void calculateNeighbourhoodSize();
     Solution* getNeighbour(int num);
-    int calculateCrossings(Solution * solution);
 
     void setInstance(Solution* x);
 };

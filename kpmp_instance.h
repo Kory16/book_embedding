@@ -63,6 +63,8 @@ public:
 		return adjacencyMatrix;
 	}
 
+    Solution* generateRandomSolution();
+
     /*static bool compare_function (vector<int> i,vector<int> j){
         return (i[3]>j[3]);
     }*/

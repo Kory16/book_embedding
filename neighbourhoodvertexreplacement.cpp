@@ -49,11 +49,4 @@ void NeighbourhoodVertexReplacement::setInstance(Solution* x){
     counter = -1;
 }
 
-int NeighbourhoodVertexReplacement::calculateCrossings(Solution * solution)
-{
-    int crossings = 0;
-    for(int i=0; i<solution->pagesNum; ++i){
-        crossings+=this->calcualteCrossingsOnPage(solution, i);
-    }
-    return crossings;
-}
+

@@ -36,3 +36,12 @@ int Neighbourhood::calcualteCrossingsOnPage(Solution* solution, int pageNum){
 
     return crossings;
 }
+
+int Neighbourhood::calculateCrossings(Solution * solution)
+{
+    int crossings = 0;
+    for(int i=0; i<solution->pagesNum; ++i){
+        crossings+=this->calcualteCrossingsOnPage(solution, i);
+    }
+    return crossings;
+}

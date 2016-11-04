@@ -36,6 +36,7 @@ protected:
     Solution* instance;
 
     int calcualteCrossingsOnPage(Solution* solution, int pageNum);
+    int calculateCrossings(Solution * solution);
 };
 
 #endif // NEIGHBOURHOOD_H

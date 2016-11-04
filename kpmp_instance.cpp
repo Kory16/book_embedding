@@ -84,8 +84,31 @@ vector <unsigned int> KPMPInstance::getVerteOrder(){
     return result;
 }
 
+Solution* KPMPInstance::generateRandomSolution(){
+    Solution* result = new Solution(this->getK(), this->getNumVertices());
+    std::srand(std::time(0));
+    for(auto it=this->edgesList.begin(); it!=edgesList.end(); it++){
+        result->edgesListWithPages.push_back(vector<int>());
+        result->edgesListWithPages.back().push_back(it->at(0));
+        result->edgesListWithPages.back().push_back(it->at(1));
+        result->edgesListWithPages.back().push_back(rand()%getK());
+    }
+
+    vector<int> v;
+    for (int i=1; i<getNumVertices(); ++i) v.push_back(i); // 1 2 3 4 5 6 7 8 9
+
+    // using built-in random generator:
+    std::random_shuffle ( v.begin(), v.end() );
+
+    for(int i=0; i<v.size(); ++i){
+        result->vertexOrder[v[i]] = i;
+    }
+
+    return result;
+}
+
 int main() {
-    string instanceNum = "2";
+    string instanceNum = "10";
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
     //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
 	ConstructionHeuristic dch;
@@ -106,11 +129,7 @@ int main() {
     FirstImprovement* frs = new FirstImprovement();
 
     LocalSearch ls(solution);
-    solution = ls.calculatePages(nvr, bst);
-
-
-    end = clock();
-    double elapsed_secs_local = double(end - begin) / CLOCKS_PER_SEC;
+    solution = ls.calculatePages(npc, rnd);
 
 	//writing solution
     KPMPSolutionWriter writer(instance->getK());
@@ -119,7 +138,8 @@ int main() {
     }
     writer.setSpineOrder(solution->getVerteOrder());
     writer.setCrossingsNum(solution->crossings);
-    writer.setElapsedTime(elapsed_secs);
+    writer.setElapsedTime(ls.elapsed_time);
+    writer.setIterartions(ls.iteration);
     writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
     //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
 	//getchar();
