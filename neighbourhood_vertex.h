@@ -4,9 +4,11 @@
 #include "neighbourhood.h"
 
 class Neighbourhood_vertex : public Neighbourhood {
+
 	
 public:	
-    Neighbourhood_vertex();
+	Neighbourhood_vertex();
+    vector <int> vertexOrder;
 	Solution* next();
 	void calculateNeighbourhoodSize();
 	Solution* getNeighbour(int num);
@@ -14,11 +16,12 @@ public:
 
 
 private:
-    int calculateCrossings(Solution* solution);
-    //map<int,int> vOrder;
-    //vector<int> first;
-    //vector<int> second;
-    //void calculateLists();
+
+	int calculateCrossings(Solution* solution);
+	vector<unsigned int> verteOrder;
+	vector<int> firstl;
+	vector<int> secondl;
+    void calculateLists();
 
 };
 

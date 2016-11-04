@@ -3,7 +3,7 @@
 
 Neighbourhood_vertex::Neighbourhood_vertex()
 {
-    //Neighbourhood_vertex::calculateLists();
+    Neighbourhood_vertex::calculateLists();
 }
 
 Solution * Neighbourhood_vertex::next()
@@ -20,17 +20,8 @@ void Neighbourhood_vertex::calculateNeighbourhoodSize()
 
 Solution * Neighbourhood_vertex::getNeighbour(int num)
 {
-    /*int buffer = Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::first[num]];
-	Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::first[num]] = Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::second[num]];
-	Neighbourhood_vertex::verteOrder[Neighbourhood_vertex::second[num]] = buffer;
-	Solution * result = new Solution(instance);
-	for (int i = 0; i < Neighbourhood_vertex::numVertices;i++) { //converting vector to map
-		Neighbourhood_vertex::vOrder.insert(std::pair< int,int>(i, Neighbourhood_vertex::verteOrder[i]));
-	}
-	result->vertexOrder = Neighbourhood_vertex::vOrder; //overwriting with new vertexorder
-    return result;*/
 
-    Solution * result = new Solution(instance);
+   /* Solution * result = new Solution(instance);
 
     int c = -1;
     int x=0, y=1;
@@ -47,7 +38,17 @@ Solution * Neighbourhood_vertex::getNeighbour(int num)
     result->vertexOrder[y] = tmp;
 
     result->crossings = calculateCrossings(result);
-    return result;
+    return result;*/
+
+
+	std::map<int,int>::iterator buffer = Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num));
+	Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num))->second = Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second;
+	Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second = buffer->second;
+	Solution * result = new Solution(instance);
+	result->vertexOrder = Neighbourhood_vertex::instance->vertexOrder; //overwriting with new vertexorder
+	int crossings = calculateCrossings(result);
+	result->crossings = crossings;
+	return result;
 
 }
 
@@ -67,16 +68,18 @@ int Neighbourhood_vertex::calculateCrossings(Solution * solution)
     return crossings;
 }
 
-/*void Neighbourhood_vertex::calculateLists()
+
+
+void Neighbourhood_vertex::calculateLists()
 {
-	int count = Neighbourhood_vertex::numVertices;
+	int count = Neighbourhood_vertex::instance->vertexOrder.size();
 	int number_to_write = 1;
-	for (int j = 1; j < Neighbourhood_vertex::numVertices; j++) {
+	for (int j = 1; j < Neighbourhood_vertex::instance->vertexOrder.size(); j++) {
 		for (int i = 1; i < count; i++) {
-			first.push_back(number_to_write);
-			second.push_back(number_to_write + i);
+			firstl.push_back(number_to_write);
+			secondl.push_back(number_to_write + i);
 		}
 		number_to_write++;
 		count--;
 	}
-}*/
+}
