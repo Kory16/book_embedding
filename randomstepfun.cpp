@@ -2,7 +2,7 @@
 
 RandomStepFun::RandomStepFun()
 {
-    //RandomStepFun::neighbours = n.getAllNeighbours(initial);
+    
 }
 
 Solution *RandomStepFun::getNeighbour(Solution* initial, Neighbourhood *n)

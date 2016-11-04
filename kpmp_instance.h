@@ -13,6 +13,7 @@
 #include "solution.h"
 #include "localsearch.h"
 #include "NeighbourhoodPageChange.h"
+#include "neighbourhood_vertex.h"
 #include "randomstepfun.h"
 
 using namespace std;
