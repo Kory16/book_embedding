@@ -16,7 +16,7 @@ LocalSearch::~LocalSearch(){
     iteration = 0;
     Solution* x = initial;
     int sameResultCounter = 0;
-    while(++iteration<1000 && x->crossings>0 && elapsed_time < 15*60 && sameResultCounter<10){
+    while(++iteration<1000 && x->crossings>0 && elapsed_time < 15*60 && sameResultCounter<1){
            Solution* new_x = stepFun->getNeighbour(x, neighbourhood);
            if(new_x->crossings<x->crossings){
                if(x!=initial){

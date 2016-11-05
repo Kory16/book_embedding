@@ -107,19 +107,20 @@ Solution* KPMPInstance::generateRandomSolution(){
     return result;
 }
 
-int main() {
-    string instanceNum = "10";
+void calculateKPMP(int num){
+    string instanceNum = to_string(num);
+    cout<<"calculating instance "<<instanceNum<<endl;
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
     //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
-	ConstructionHeuristic dch;
+    ConstructionHeuristic dch;
 
-	//generating initial guess
+    //generating initial guess
     clock_t begin = clock();
     Solution* solution = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
-	//local search Neighbourhood 1
+    //local search Neighbourhood 1
     //Neighbourhood_vertex * nv = new Neighbourhood_vertex();
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
     NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
@@ -129,9 +130,14 @@ int main() {
     FirstImprovement* frs = new FirstImprovement();
 
     LocalSearch ls(solution);
-    solution = ls.calculatePages(npc, rnd);
+    //for(int i=0; i<5; i++){
+    Solution* solution_lc = ls.calculatePages(nvr, frs);
+    //cout<<solution_lc->crossings<<endl;
+    //cout<<ls.elapsed_time<<endl;
+    //cout<<ls.iteration<<endl;
+    //}
 
-	//writing solution
+    //writing solution
     KPMPSolutionWriter writer(instance->getK());
     for(int i=0; i<solution->edgesListWithPages.size(); i++){
         writer.addEdgeOnPage(solution->edgesListWithPages[i][0], solution->edgesListWithPages[i][1], solution->edgesListWithPages[i][2]);
@@ -142,6 +148,12 @@ int main() {
     writer.setIterartions(ls.iteration);
     writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
     //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
-	//getchar();
+    cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
+}
+
+int main() {
+    for(int i=1; i<=10; i++){
+        calculateKPMP(i);
+    }
     return 0;
 }
