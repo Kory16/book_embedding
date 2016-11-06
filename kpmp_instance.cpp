@@ -110,8 +110,8 @@ Solution* KPMPInstance::generateRandomSolution(){
 void calculateKPMP(int num){
     string instanceNum = to_string(num);
     cout<<"calculating instance "<<instanceNum<<endl;
-    //KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
-    KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
+    //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
     ConstructionHeuristic dch;
 
     //generating initial guess
@@ -146,8 +146,8 @@ void calculateKPMP(int num){
     writer.setCrossingsNum(solution->crossings);
     writer.setElapsedTime(ls.elapsed_time);
     writer.setIterartions(ls.iteration);
-    //writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
-    writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
+    writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
+    //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
     cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
 }
 
