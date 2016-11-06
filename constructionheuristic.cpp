@@ -104,7 +104,7 @@ void ConstructionHeuristic::DFS(int v, bool visited[], vector<vector<unsigned in
     // mark vertice as visited
     visited[v] = true;
     // assigne position of the current vertice
-    this->vertexOrder[v] = this->vertexOrder.size()-1;
+    this->vertexOrder[v] = this->vertexOrder.size();
 
     //iterate over all connected vertices, starting form the farthest
     map<int, int> connectedVertices;

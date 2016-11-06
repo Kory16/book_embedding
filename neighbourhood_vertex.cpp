@@ -3,7 +3,7 @@
 
 Neighbourhood_vertex::Neighbourhood_vertex()
 {
-    Neighbourhood_vertex::calculateLists();
+   
 }
 
 Solution * Neighbourhood_vertex::next()
@@ -42,6 +42,7 @@ Solution * Neighbourhood_vertex::getNeighbour(int num)
 
 
 	std::map<int,int>::iterator buffer = Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num));
+
 	Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num))->second = Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second;
 	Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second = buffer->second;
 	Solution * result = new Solution(instance);
@@ -55,6 +56,7 @@ Solution * Neighbourhood_vertex::getNeighbour(int num)
 void Neighbourhood_vertex::setInstance(Solution * x)
 {
 	instance = x;
+	Neighbourhood_vertex::calculateLists();
 	calculateNeighbourhoodSize();
 	counter = -1;
 }
@@ -72,9 +74,9 @@ int Neighbourhood_vertex::calculateCrossings(Solution * solution)
 
 void Neighbourhood_vertex::calculateLists()
 {
-	int count = Neighbourhood_vertex::instance->vertexOrder.size();
+	int count = Neighbourhood_vertex::instance->vertexNum;
 	int number_to_write = 1;
-	for (int j = 1; j < Neighbourhood_vertex::instance->vertexOrder.size(); j++) {
+	for (int j = 1; j < Neighbourhood_vertex::instance->vertexNum; j++) {
 		for (int i = 1; i < count; i++) {
 			firstl.push_back(number_to_write);
 			secondl.push_back(number_to_write + i);

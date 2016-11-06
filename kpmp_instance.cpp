@@ -110,8 +110,8 @@ Solution* KPMPInstance::generateRandomSolution(){
 void calculateKPMP(int num){
     string instanceNum = to_string(num);
     cout<<"calculating instance "<<instanceNum<<endl;
-    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
-    //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
+    //KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
+    KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
     ConstructionHeuristic dch;
 
     //generating initial guess
@@ -121,7 +121,7 @@ void calculateKPMP(int num){
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     //local search Neighbourhood 1
-    //Neighbourhood_vertex * nv = new Neighbourhood_vertex();
+    Neighbourhood_vertex * nv = new Neighbourhood_vertex();
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
     NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
 
@@ -131,7 +131,7 @@ void calculateKPMP(int num){
 
     LocalSearch ls(solution);
     //for(int i=0; i<5; i++){
-    Solution* solution_lc = ls.calculatePages(nvr, frs);
+    Solution* solution_lc = ls.calculatePages(nv, frs);
     //cout<<solution_lc->crossings<<endl;
     //cout<<ls.elapsed_time<<endl;
     //cout<<ls.iteration<<endl;
@@ -146,8 +146,8 @@ void calculateKPMP(int num){
     writer.setCrossingsNum(solution->crossings);
     writer.setElapsedTime(ls.elapsed_time);
     writer.setIterartions(ls.iteration);
-    writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
-    //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
+    //writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
+    writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
     cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
 }
 
