@@ -41,10 +41,11 @@ Solution * Neighbourhood_vertex::getNeighbour(int num)
     return result;*/
 
 
-	std::map<int,int>::iterator buffer = Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num));
+	std::map<int, int>::iterator buffer = Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num)-1);
+	int buf = buffer->second;
 
-	Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num))->second = Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second;
-	Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num))->second = buffer->second;
+	Neighbourhood_vertex::instance->vertexOrder.find(firstl.at(num)-1)->second = Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num)-1)->second;
+	Neighbourhood_vertex::instance->vertexOrder.find(secondl.at(num)-1)->second = buf;
 	Solution * result = new Solution(instance);
 	result->vertexOrder = Neighbourhood_vertex::instance->vertexOrder; //overwriting with new vertexorder
 	int crossings = calculateCrossings(result);
