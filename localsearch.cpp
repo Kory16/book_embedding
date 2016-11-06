@@ -28,7 +28,7 @@ LocalSearch::~LocalSearch(){
                sameResultCounter++;
            }
            end = clock();
-           elapsed_time = double(end - begin) / CLOCKS_PER_SEC;
+           elapsed_time += double(end - begin) / CLOCKS_PER_SEC;
     }
     return x;
 }

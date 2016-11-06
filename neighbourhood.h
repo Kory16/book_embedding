@@ -1,6 +1,7 @@
 #ifndef NEIGHBOURHOOD_H
 #define NEIGHBOURHOOD_H
 
+#include <algorithm>
 #include <vector>
 #include "solution.h"
 
