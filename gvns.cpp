@@ -24,9 +24,10 @@ Solution* GVNS::calculatePages(vector<Neighbourhood *> neighbourhoods){
         k = 0;
         while(k < neighbourhoods.size()){
             // shaking
+            neighbourhoods[k]->setSize(3);
             Solution * x1 = rnd->getNeighbour(x, neighbourhoods[k]);
             l=1;
-            while(l<=3){
+            while(l<=4){
                 neighbourhoods[k]->setSize(l);
                 Solution * x2 = bst->getNeighbour(x1, neighbourhoods[k]);
                 if(x2==x1){
