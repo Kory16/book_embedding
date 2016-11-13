@@ -18,6 +18,7 @@
 #include "randomstepfun.h"
 #include "neighbourhood_vertex.h"
 #include "neighbourhoodvertexreplacement.h"
+#include "gvns.h"
 
 using namespace std;
 

@@ -2,8 +2,10 @@
 #define NEIGHBOURHOODVERTEXREPLACEMENT_H
 
 #include "neighbourhood.h"
-#include "cmath"
+#include <ctime>
+#include <vector>
 
+using namespace std;
 
 class NeighbourhoodVertexReplacement : public Neighbourhood
 {
@@ -12,9 +14,17 @@ public:
 
     Solution* next();
     void calculateNeighbourhoodSize();
-    Solution* getNeighbour(int num);
+    //Solution* getNeighbour(int num);
+    Solution* getRandomNeighbour();
 
     void setInstance(Solution* x);
+
+private:
+    void replaceVertex(Solution* s, int vertex, int posNum);
+    vector<int> vertices;
+    vector<int> positions;
+    int changeVertices();
+    int changePositions();
 };
 
 #endif // NEIGHBOURHOODVERTEXREPLACEMENT_H

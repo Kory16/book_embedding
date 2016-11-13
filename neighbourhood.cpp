@@ -3,7 +3,7 @@
 Neighbourhood::Neighbourhood()
 {
     k=1;
-    counter = -1;
+    //counter = -1;
     instance = nullptr;
     neighbourhoodSize = 0;
 }

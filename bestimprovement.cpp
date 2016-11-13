@@ -8,10 +8,10 @@ BestImprovement::BestImprovement()
 Solution* BestImprovement::getNeighbour(Solution *initial, Neighbourhood* n){
     
     n->setInstance(initial);
-    int neighSize = n->getNeighbourhoodSize();
+    //int neighSize = n->getNeighbourhoodSize();
     Solution* best = initial;
-    for(int i=0; i<neighSize-1; ++i){
-        Solution* next_solution = n->getNeighbour(i);
+    Solution* next_solution = n->next();
+    while (next_solution!=nullptr) {
         if(next_solution->crossings<best->crossings){
             if(best!=initial){
                 delete best;
@@ -21,6 +21,7 @@ Solution* BestImprovement::getNeighbour(Solution *initial, Neighbourhood* n){
         else{
             delete next_solution;
         }
+       next_solution = n->next();
     }
     return best;
 }

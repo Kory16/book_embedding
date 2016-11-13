@@ -125,17 +125,16 @@ void calculateKPMP(int num){
     NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
     NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
 
-    RandomStepFun* rnd = new RandomStepFun();
-    BestImprovement* bst = new BestImprovement();
-    FirstImprovement* frs = new FirstImprovement();
+    //RandomStepFun* rnd = new RandomStepFun();
+    //BestImprovement* bst = new BestImprovement();
+    //FirstImprovement* frs = new FirstImprovement();
 
-    LocalSearch ls(solution);
-    //for(int i=0; i<5; i++){
-    Solution* solution_lc = ls.calculatePages(nv, frs);
-    //cout<<solution_lc->crossings<<endl;
-    //cout<<ls.elapsed_time<<endl;
-    //cout<<ls.iteration<<endl;
-    //}
+    //LocalSearch ls(solution);
+    //Solution* solution_lc = ls.calculatePages(nvr, bst);
+
+    GVNS ls(solution);
+    vector<Neighbourhood*> neighbourhoods = {nv, npc, nvr};
+    Solution* solution_lc = ls.calculatePages(neighbourhoods);
 
     //writing solution
     KPMPSolutionWriter writer(instance->getK());
@@ -152,7 +151,7 @@ void calculateKPMP(int num){
 }
 
 int main() {
-    for(int i=1; i<=10; i++){
+    for(int i=2; i<=2; i++){
         calculateKPMP(i);
     }
     return 0;

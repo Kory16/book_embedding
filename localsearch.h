@@ -13,8 +13,6 @@
 class LocalSearch
 {
 
-    Solution * initial;
-
 public:
     LocalSearch(Solution* initial);
     ~LocalSearch();
@@ -22,6 +20,8 @@ public:
     Solution* calculatePages(Neighbourhood *neighbourhood, StepFunction *stepFun);
     int iteration;
     clock_t elapsed_time;
+
+    Solution * initial;
 private:
 
 	

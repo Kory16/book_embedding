@@ -16,7 +16,8 @@ public:
     //virtual vector<KPMPInstance> getAllNeighbours (KPMPInstance & x)=0;
     virtual Solution* next()=0;
     virtual void calculateNeighbourhoodSize()=0;
-    virtual Solution* getNeighbour(int num)=0;
+    //virtual Solution* getNeighbour(int num)=0;
+    virtual Solution* getRandomNeighbour()=0;
 
     void virtual setInstance(Solution* x){
         instance = x;
@@ -32,7 +33,7 @@ public:
 
 protected:
     int k;
-    int counter;
+    //int counter;
     int neighbourhoodSize;
     Solution* instance;
 
