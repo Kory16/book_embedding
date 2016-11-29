@@ -4,6 +4,10 @@
 #include "solution.h"
 #include <vector>
 #include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <ctime>
+#include <map>
 
 using namespace std;
 
@@ -12,10 +16,10 @@ class GeneticAlgorithm
 public:
     GeneticAlgorithm();
     void setParameters(int size, int k, double crossOverProb, double mutationProb, int iter);
-    Solution* run();
+    Solution* run(vector< vector <int> >& edgesListWithPages, int pagesNum, int verticesNum);
 
 private:
-    void initialize();
+    void initialize(vector< vector <int> >& edgesListWithPages, int pagesNum, int verticesNum);
     void select();
     void evaluate();
     void crossOver();
@@ -26,6 +30,8 @@ private:
     void mutatePages();
     void replace();
     Solution* findBest();
+    int calculateCrossings(Solution * solution);
+    int calcualteCrossingsOnPage(Solution* solution, int pageNum);
 
     double crossOverProbability;
     double mutationProbability;

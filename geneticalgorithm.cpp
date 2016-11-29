@@ -17,10 +17,10 @@ void GeneticAlgorithm::setParameters(int size, int k, double crossOverProb, doub
     this->iterations = iter;
 }
 
-Solution* GeneticAlgorithm::run(){
+Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesListWithPages, int pagesNum, int verticesNum){
     int i = 0;
     Solution* best = nullptr;
-    initialize();
+    initialize(edgesListWithPages, pagesNum, verticesNum);
     evaluate();
     while(i<this->iterations){
         select();
@@ -35,8 +35,34 @@ Solution* GeneticAlgorithm::run(){
     return best;
 }
 
-void GeneticAlgorithm::initialize(){
+void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, int pagesNum, int verticesNum){
+    for(int i =0; i<this->population.size(); ++i){
+        delete this->population[i];
+    }
+    this->population.clear();
 
+    vector<int> v;
+    for (int i=1; i<verticesNum; ++i) v.push_back(i); // 1 2 3 4 5 6 7 8 9
+
+    std::srand(std::time(0));
+    for (int i=0; i<this->populationSize; ++i){
+        Solution* result = new Solution(pagesNum, verticesNum);
+        for(auto it=edgesListWithPages.begin(); it!=edgesListWithPages.end(); it++){
+            result->edgesListWithPages.push_back(vector<int>());
+            result->edgesListWithPages.back().push_back(it->at(0));
+            result->edgesListWithPages.back().push_back(it->at(1));
+            result->edgesListWithPages.back().push_back(rand()%pagesNum);
+        }
+
+        // using built-in random generator:
+        std::random_shuffle ( v.begin(), v.end() );
+
+        for(int i=0; i<v.size(); ++i){
+            result->vertexOrder[v[i]] = i;
+        }
+
+        this->population.push_back(result);
+    }
 }
 
 void GeneticAlgorithm::select(){
@@ -44,7 +70,9 @@ void GeneticAlgorithm::select(){
 }
 
 void GeneticAlgorithm::evaluate(){
-
+    for(auto it = this->population.begin(); it!=this->population.end(); ++it){
+       (*it)->crossings = calculateCrossings(*it);
+    }
 }
 
 void GeneticAlgorithm::crossOver(){
@@ -86,4 +114,38 @@ Solution* GeneticAlgorithm::findBest(){
         }
     }
     return best;
+}
+
+int GeneticAlgorithm::calcualteCrossingsOnPage(Solution* solution, int pageNum){
+    vector < vector<int> > edgesOnPage;
+    for(auto it = solution->edgesListWithPages.begin(); it!=solution->edgesListWithPages.end(); ++it){
+        if (it->at(2)!=pageNum)
+            continue;
+        edgesOnPage.push_back(*it);
+    }
+    unsigned int crossings = 0;
+
+    // for all edges on the page, count how much crossing will be caused by adding a new edge
+    for(unsigned int i = 0; i<edgesOnPage.size(); i++){
+        int vi1 = min(solution->vertexOrder[edgesOnPage[i][0]], solution->vertexOrder[edgesOnPage[i][1]]);
+        int vi2 = max(solution->vertexOrder[edgesOnPage[i][0]], solution->vertexOrder[edgesOnPage[i][1]]);
+        for(unsigned int j =i+1; j<edgesOnPage.size(); j++){
+            int vj1 = min(solution->vertexOrder[edgesOnPage[j][0]], solution->vertexOrder[edgesOnPage[j][1]]);
+            int vj2 = max(solution->vertexOrder[edgesOnPage[j][0]], solution->vertexOrder[edgesOnPage[j][1]]);
+            if((vi1<vj1 && vj1<vi2 && vi2<vj2) || (vj1<vi1 && vi1<vj2 && vj2<vi2)){
+                crossings++;
+            }
+        }
+    }
+
+    return crossings;
+}
+
+int GeneticAlgorithm::calculateCrossings(Solution * solution)
+{
+    int crossings = 0;
+    for(int i=0; i<solution->pagesNum; ++i){
+        crossings+=this->calcualteCrossingsOnPage(solution, i);
+    }
+    return crossings;
 }
