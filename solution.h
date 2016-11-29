@@ -18,6 +18,7 @@ public:
     int pagesNum;
     int vertexNum;
     vector <unsigned int> getVerteOrder();
+    double fitness;
 };
 
 #endif // SOLUTION_H

@@ -32,6 +32,7 @@ private:
     Solution* findBest();
     int calculateCrossings(Solution * solution);
     int calcualteCrossingsOnPage(Solution* solution, int pageNum);
+    void clearPopulation(vector<Solution*> p);
 
     double crossOverProbability;
     double mutationProbability;

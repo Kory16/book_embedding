@@ -36,10 +36,7 @@ Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesListWithPages, int pa
 }
 
 void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, int pagesNum, int verticesNum){
-    for(int i =0; i<this->population.size(); ++i){
-        delete this->population[i];
-    }
-    this->population.clear();
+    clearPopulation(this->population);
 
     vector<int> v;
     for (int i=1; i<verticesNum; ++i) v.push_back(i); // 1 2 3 4 5 6 7 8 9
@@ -66,12 +63,29 @@ void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, i
 }
 
 void GeneticAlgorithm::select(){
-
+    // roulette wheel selection
+    clearPopulation(this->newPopulation);
+    std::srand(std::time(0));
+    double totalFitness = 0;
+    for(auto it = this->population.begin(); it!=this->population.end(); ++it){
+       totalFitness += (*it)->fitness;
+    }
+    for(int i=0; i<populationSize; ++i){
+        int p = (double)rand()/ RAND_MAX * totalFitness;
+        auto it = this->population.begin();
+        double fitnessSum = 0;
+        while(p>=fitnessSum && p<fitnessSum + (*it)->fitness){
+            fitnessSum += (*it)->fitness;
+            ++it;
+        }
+        this->newPopulation.push_back((*it));
+    }
 }
 
 void GeneticAlgorithm::evaluate(){
     for(auto it = this->population.begin(); it!=this->population.end(); ++it){
        (*it)->crossings = calculateCrossings(*it);
+        (*it)->fitness = 1.0/(*it)->crossings;
     }
 }
 
@@ -148,4 +162,11 @@ int GeneticAlgorithm::calculateCrossings(Solution * solution)
         crossings+=this->calcualteCrossingsOnPage(solution, i);
     }
     return crossings;
+}
+
+void GeneticAlgorithm::clearPopulation(vector<Solution*> p){
+    for(int i =0; i<p.size(); ++i){
+        delete p[i];
+    }
+    p.clear();
 }
