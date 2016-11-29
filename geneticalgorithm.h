@@ -23,11 +23,11 @@ private:
     void select();
     void evaluate();
     void crossOver();
-    void crossOverVertices();
-    void crossOverPages();
+    void crossOverVertices(int x, int y);
+    void crossOverPages(int x, int y);
     void mutate();
-    void mutateVertices();
-    void mutatePages();
+    void mutateVertices(int x);
+    void mutatePages(int x);
     void replace();
     Solution* findBest();
     int calculateCrossings(Solution * solution);
@@ -41,6 +41,7 @@ private:
     int iterations;
 
     vector<Solution*> population;
+    vector<Solution*> selectedPopulation;
     vector<Solution*> newPopulation;
 
     static bool compare_function (Solution* i, Solution j){

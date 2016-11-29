@@ -64,7 +64,7 @@ void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, i
 
 void GeneticAlgorithm::select(){
     // roulette wheel selection
-    clearPopulation(this->newPopulation);
+    //clearPopulation(selectedPopulation);
     std::srand(std::time(0));
     double totalFitness = 0;
     for(auto it = this->population.begin(); it!=this->population.end(); ++it){
@@ -78,7 +78,7 @@ void GeneticAlgorithm::select(){
             fitnessSum += (*it)->fitness;
             ++it;
         }
-        this->newPopulation.push_back((*it));
+        this->selectedPopulation.push_back((*it));
     }
 }
 
@@ -90,31 +90,60 @@ void GeneticAlgorithm::evaluate(){
 }
 
 void GeneticAlgorithm::crossOver(){
+    int first = 0;
+    int one;
+    double p;
+
+    for(int i=0; i<populationSize; ++i){
+        p = (double)rand()/RAND_MAX;
+        if(p<crossOverProbability){
+            ++first;
+            if (first%2 == 0){
+                crossOverVertices(one, i);
+                crossOverPages(one, i);
+            }
+            else{
+                one = i;
+            }
+        }
+        else{
+            newPopulation.push_back(new Solution(selectedPopulation[i]));
+        }
+    }
+}
+
+void GeneticAlgorithm::crossOverVertices(int x, int y){
 
 }
 
-void GeneticAlgorithm::crossOverVertices(){
-
-}
-
-void GeneticAlgorithm::crossOverPages(){
+void GeneticAlgorithm::crossOverPages(int x, int y){
 
 }
 
 void GeneticAlgorithm::mutate(){
+    double p;
+    for(int i=0; i<populationSize; ++i){
+        p = (double)rand()/RAND_MAX;
+        if(p<mutationProbability){
+            mutateVertices(i);
+            mutatePages(i);
+        }
+    }
+}
+
+void GeneticAlgorithm::mutateVertices(int y){
 
 }
 
-void GeneticAlgorithm::mutateVertices(){
-
-}
-
-void GeneticAlgorithm::mutatePages(){
+void GeneticAlgorithm::mutatePages(int x){
 
 }
 
 void GeneticAlgorithm::replace(){
-
+    clearPopulation(population);
+    selectedPopulation.clear();
+    population = newPopulation;
+    newPopulation.clear();
 }
 
 Solution* GeneticAlgorithm::findBest(){
