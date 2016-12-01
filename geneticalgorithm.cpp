@@ -117,7 +117,15 @@ void GeneticAlgorithm::crossOverVertices(int x, int y){
 }
 
 void GeneticAlgorithm::crossOverPages(int x, int y){
-
+    int crossoverPoint = rand()%selectedPopulation[x]->edgesListWithPages.size();;
+    Solution* child1 = new Solution(selectedPopulation[x]);
+    Solution* child2 = new Solution(selectedPopulation[y]);
+    for(int i=0; i<crossoverPoint; ++i){
+        child2->edgesListWithPages[i][2] = selectedPopulation[x]->edgesListWithPages[i][2];
+        child1->edgesListWithPages[i][2] = selectedPopulation[y]->edgesListWithPages[i][2];
+    }
+    newPopulation.push_back(child1);
+    newPopulation.push_back(child2);
 }
 
 void GeneticAlgorithm::mutate(){
@@ -132,11 +140,29 @@ void GeneticAlgorithm::mutate(){
 }
 
 void GeneticAlgorithm::mutateVertices(int y){
+    int vertex = rand()%newPopulation[y]->vertexNum;
+    int prevPosNum = newPopulation[y]->vertexOrder[vertex];
+    int posNum = (prevPosNum + 1) % newPopulation[y]->vertexNum;
+    int first = min(posNum, prevPosNum);
+    int second = max(posNum, prevPosNum);
+    int sign = (posNum-prevPosNum > 0) ? 1 : ((posNum-prevPosNum < 0) ? -1 : 0);
+    for(auto it = newPopulation[y]->vertexOrder.begin(); it!=newPopulation[y]->vertexOrder.end(); it++){
+        if(it->first==vertex){
+            it->second = posNum;
+        }
+        else{
+            if(it->second >=first && it->second <= second){
+                it->second -= sign;
+            }
+        }
+    }
 
 }
 
 void GeneticAlgorithm::mutatePages(int x){
-
+    int edge = rand()%newPopulation[x]->edgesListWithPages.size();
+    int page = rand()%newPopulation[x]->pagesNum;
+    newPopulation[x]->edgesListWithPages[edge][2] = page;
 }
 
 void GeneticAlgorithm::replace(){
