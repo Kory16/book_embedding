@@ -23,8 +23,8 @@ private:
     void select();
     void evaluate();
     void crossOver();
-    void crossOverVertices(int x, int y);
-    void crossOverPages(int x, int y);
+    void crossOverVertices(Solution* parent1, Solution* parent2, Solution* child1, Solution* child2);
+    void crossOverPages(Solution *parent1, Solution *parent2, Solution *child1, Solution *child2);
     void mutate();
     void mutateVertices(int x);
     void mutatePages(int x);

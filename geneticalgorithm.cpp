@@ -99,8 +99,12 @@ void GeneticAlgorithm::crossOver(){
         if(p<crossOverProbability){
             ++first;
             if (first%2 == 0){
-                crossOverVertices(one, i);
-                crossOverPages(one, i);
+                Solution* child1 = new Solution(selectedPopulation[one]);
+                Solution* child2 = new Solution(selectedPopulation[i]);
+                crossOverVertices(selectedPopulation[one], selectedPopulation[i], child1, child2);
+                crossOverPages(selectedPopulation[one], selectedPopulation[i], child1, child2);
+                newPopulation.push_back(child1);
+                newPopulation.push_back(child2);
             }
             else{
                 one = i;
@@ -112,20 +116,32 @@ void GeneticAlgorithm::crossOver(){
     }
 }
 
-void GeneticAlgorithm::crossOverVertices(int x, int y){
+void GeneticAlgorithm::crossOverVertices(Solution *parent1, Solution *parent2, Solution *child1, Solution *child2){
+    // partially matched crossover
+    int cp1 = rand()%parent1->vertexNum;
+    int cp2 = rand()%parent1->vertexNum;
+    if(cp1==cp2) return;
+    int start = min(cp1, cp2);
+    int end = max(cp1, cp2);
+    vector<unsigned int> vertices1 = parent1->getVerteOrder();
+    vector<unsigned int> vertices2 = parent2->getVerteOrder();
+    for(int i=start; i<end; i++){
+        int vertex = vertices2[i];
+        child1->vertexOrder[vertices1[i]] = child1->vertexOrder[vertex];
+        child1->vertexOrder[vertex] = i;
 
+        vertex = vertices1[i];
+        child2->vertexOrder[vertices2[i]] = child2->vertexOrder[vertex];
+        child2->vertexOrder[vertex] = i;
+    }
 }
 
-void GeneticAlgorithm::crossOverPages(int x, int y){
-    int crossoverPoint = rand()%selectedPopulation[x]->edgesListWithPages.size();;
-    Solution* child1 = new Solution(selectedPopulation[x]);
-    Solution* child2 = new Solution(selectedPopulation[y]);
+void GeneticAlgorithm::crossOverPages(Solution *parent1, Solution *parent2, Solution *child1, Solution *child2){
+    int crossoverPoint = rand()%parent1->edgesListWithPages.size();;
     for(int i=0; i<crossoverPoint; ++i){
-        child2->edgesListWithPages[i][2] = selectedPopulation[x]->edgesListWithPages[i][2];
-        child1->edgesListWithPages[i][2] = selectedPopulation[y]->edgesListWithPages[i][2];
+        child2->edgesListWithPages[i][2] = parent1->edgesListWithPages[i][2];
+        child1->edgesListWithPages[i][2] = child2->edgesListWithPages[i][2];
     }
-    newPopulation.push_back(child1);
-    newPopulation.push_back(child2);
 }
 
 void GeneticAlgorithm::mutate(){
