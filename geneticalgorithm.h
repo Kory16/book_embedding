@@ -15,11 +15,14 @@ class GeneticAlgorithm
 {
 public:
     GeneticAlgorithm();
-    void setParameters(int size, int k, double crossOverProb, double mutationProb, int iter);
-    Solution* run(vector< vector <int> >& edgesListWithPages, int pagesNum, int verticesNum);
+    void setParameters(int size, double crossOverProb, double mutationProb, int iter);
+    Solution* run(vector< vector <int> >& edgesList, int pagesNum, int verticesNum);
+    int getIterations(){
+        return iterations;
+    }
 
 private:
-    void initialize(vector< vector <int> >& edgesListWithPages, int pagesNum, int verticesNum);
+    void initialize(vector< vector <int> >& edgesList, int pagesNum, int verticesNum);
     void select();
     void evaluate();
     void crossOver();
@@ -38,6 +41,7 @@ private:
     double mutationProbability;
     int k; // how many the best parents is inserted to the new population
     int populationSize;
+    int maxIterations;
     int iterations;
 
     vector<Solution*> population;

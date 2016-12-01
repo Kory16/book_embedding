@@ -66,7 +66,7 @@ void NeighbourhoodVertexReplacement::calculateNeighbourhoodSize(){
 }
 
 Solution* NeighbourhoodVertexReplacement::getRandomNeighbour(){
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     Solution* result = new Solution(instance);
     for(int i=0; i<k; i++){
         replaceVertex(result, rand()%instance->vertexNum, rand()%(instance->vertexNum - 1));

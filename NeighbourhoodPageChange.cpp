@@ -67,7 +67,7 @@ void NeighbourhoodPageChange::changePage(Solution* s, int edge, int pageNum){
 }
 
 Solution* NeighbourhoodPageChange::getRandomNeighbour(){
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     Solution* result = new Solution(instance);
     int edgesNum = instance->edgesListWithPages.size();
     for(int i=0; i<k; i++){

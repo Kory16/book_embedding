@@ -6,45 +6,54 @@ GeneticAlgorithm::GeneticAlgorithm()
     this->k = 10;
     this->crossOverProbability = 0.8;
     this->mutationProbability = 0.2;
-    this->iterations = 20;
+    this->maxIterations = 20;
 }
 
-void GeneticAlgorithm::setParameters(int size, int k, double crossOverProb, double mutationProb, int iter){
+void GeneticAlgorithm::setParameters(int size, double crossOverProb, double mutationProb, int iter){
     this->populationSize = size;
-    this->k = k;
+    //this->k = k;
     this->crossOverProbability = crossOverProb;
     this->mutationProbability = mutationProb;
-    this->iterations = iter;
+    this->maxIterations = iter;
 }
 
-Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesListWithPages, int pagesNum, int verticesNum){
-    int i = 0;
+Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesList, int pagesNum, int verticesNum){
+    iterations = 0;
     Solution* best = nullptr;
-    initialize(edgesListWithPages, pagesNum, verticesNum);
+    Solution* currentBest = nullptr;
+    initialize(edgesList, pagesNum, verticesNum);
     evaluate();
-    while(i<this->iterations){
+    while(iterations<this->maxIterations){
         select();
         crossOver();
         mutate();
         replace();
         evaluate();
-        best = findBest();
-        cout<<"Iteration "<<i<<" , best instance crossings: "<<best->crossings<<endl;
-        i++;
+        currentBest = findBest();
+        if(best != nullptr && best->crossings > currentBest->crossings){
+            delete best;
+            best = new Solution(currentBest);
+        }
+        else{
+            if(best==nullptr){
+                best = new Solution(currentBest);
+            }
+        }
+        cout<<"Iteration "<<iterations<<" , best instance crossings: "<<currentBest->crossings<<endl;
+        iterations++;
     }
     return best;
 }
 
-void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, int pagesNum, int verticesNum){
+void GeneticAlgorithm::initialize(vector< vector <int> > & edgesList, int pagesNum, int verticesNum){
     clearPopulation(this->population);
 
     vector<int> v;
-    for (int i=1; i<verticesNum; ++i) v.push_back(i); // 1 2 3 4 5 6 7 8 9
+    for (int i=0; i<verticesNum; ++i) v.push_back(i); // 1 2 3 4 5 6 7 8 9
 
-    std::srand(std::time(0));
     for (int i=0; i<this->populationSize; ++i){
         Solution* result = new Solution(pagesNum, verticesNum);
-        for(auto it=edgesListWithPages.begin(); it!=edgesListWithPages.end(); it++){
+        for(auto it=edgesList.begin(); it!=edgesList.end(); it++){
             result->edgesListWithPages.push_back(vector<int>());
             result->edgesListWithPages.back().push_back(it->at(0));
             result->edgesListWithPages.back().push_back(it->at(1));
@@ -65,13 +74,13 @@ void GeneticAlgorithm::initialize(vector< vector <int> > & edgesListWithPages, i
 void GeneticAlgorithm::select(){
     // roulette wheel selection
     //clearPopulation(selectedPopulation);
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     double totalFitness = 0;
     for(auto it = this->population.begin(); it!=this->population.end(); ++it){
        totalFitness += (*it)->fitness;
     }
     for(int i=0; i<populationSize; ++i){
-        int p = (double)rand()/ RAND_MAX * totalFitness;
+        double p = (double)rand()/ RAND_MAX * totalFitness;
         auto it = this->population.begin();
         double fitnessSum = 0;
         while(p>=fitnessSum && p<fitnessSum + (*it)->fitness){

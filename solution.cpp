@@ -19,7 +19,7 @@ vector <unsigned int> Solution::getVerteOrder(){
         result.push_back(0);
     }
     for(auto it=vertexOrder.begin(); it!=vertexOrder.end(); ++it){
-        result[it->first] = it->second;
+        result[it->second] = it->first;
     }
     return result;
 }

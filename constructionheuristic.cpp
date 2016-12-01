@@ -44,7 +44,7 @@ Solution* ConstructionHeuristic::calculatePages(vector< vector<int> > & edgesLis
 
 vector<unsigned int> ConstructionHeuristic::pageSelection(vector<vector<unsigned int> > pagesList, int groupSize){
     sort(pagesList.begin(), pagesList.end(), ConstructionHeuristic::compare_function);
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     int randPage = std::rand() % groupSize;
     return pagesList[randPage];
 }

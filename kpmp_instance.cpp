@@ -86,7 +86,7 @@ vector <unsigned int> KPMPInstance::getVerteOrder(){
 
 Solution* KPMPInstance::generateRandomSolution(){
     Solution* result = new Solution(this->getK(), this->getNumVertices());
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     for(auto it=this->edgesList.begin(); it!=edgesList.end(); it++){
         result->edgesListWithPages.push_back(vector<int>());
         result->edgesListWithPages.back().push_back(it->at(0));
@@ -112,18 +112,18 @@ void calculateKPMP(int num){
     cout<<"calculating instance "<<instanceNum<<endl;
     KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
     //KPMPInstance* instance = KPMPInstance::readInstance("F:\\TUWIEN\\courses\\heuristic\\instances\\automatic-" + instanceNum + ".txt"); //Kornel
-    ConstructionHeuristic dch;
+    //ConstructionHeuristic dch;
 
     //generating initial guess
-    clock_t begin = clock();
-    Solution* solution = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
-    clock_t end = clock();
-    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    //clock_t begin = clock();
+    //Solution* solution = dch.calculatePages(instance->edgesList, instance->adjacencyList, instance->getK(), instance->getNumVertices(), 50);
+    //clock_t end = clock();
+    //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     //local search Neighbourhood 1
-    Neighbourhood_vertex * nv = new Neighbourhood_vertex();
-    NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
-    NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
+    //Neighbourhood_vertex * nv = new Neighbourhood_vertex();
+    //NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
+    //NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
 
     //RandomStepFun* rnd = new RandomStepFun();
     //BestImprovement* bst = new BestImprovement();
@@ -132,9 +132,17 @@ void calculateKPMP(int num){
     //LocalSearch ls(solution);
     //Solution* solution_lc = ls.calculatePages(nvr, bst);
 
-    GVNS ls(solution);
-    vector<Neighbourhood*> neighbourhoods = {nv, npc, nvr};
-    Solution* solution_lc = ls.calculatePages(neighbourhoods);
+    //GVNS ls(solution);
+    //vector<Neighbourhood*> neighbourhoods = {nv, npc, nvr};
+    //Solution* solution_lc = ls.calculatePages(neighbourhoods);
+
+    //genetic algorithm
+    clock_t begin = clock();
+    GeneticAlgorithm geneticAlgorithm;
+    geneticAlgorithm.setParameters(50, 0.8, 0.2, 50);
+    Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     //writing solution
     KPMPSolutionWriter writer(instance->getK());
@@ -143,15 +151,16 @@ void calculateKPMP(int num){
     }
     writer.setSpineOrder(solution->getVerteOrder());
     writer.setCrossingsNum(solution->crossings);
-    writer.setElapsedTime(ls.elapsed_time);
-    writer.setIterartions(ls.iteration);
+    writer.setElapsedTime(elapsed_secs);
+    writer.setIterartions(geneticAlgorithm.getIterations());
     writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
     //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
-    cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
+    //cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
 }
 
 int main() {
-    for(int i=2; i<=2; i++){
+    std::srand(std::time(0));
+    for(int i=1; i<=1; i++){
         calculateKPMP(i);
     }
     return 0;

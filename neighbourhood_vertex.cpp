@@ -103,7 +103,7 @@ void Neighbourhood_vertex::calculateLists()
 }
 
 Solution* Neighbourhood_vertex::getRandomNeighbour(){
-    std::srand(std::time(0));
+    //std::srand(std::time(0));
     Solution* result = new Solution(instance);
     for(int i=0; i<k; i++){
         swapVertexes(result, rand()%instance->vertexNum, rand()%instance->vertexNum);
