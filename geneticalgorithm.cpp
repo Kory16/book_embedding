@@ -83,9 +83,11 @@ void GeneticAlgorithm::select(){
         double p = (double)rand()/ RAND_MAX * totalFitness;
         auto it = this->population.begin();
         double fitnessSum = 0;
-        while(p>=fitnessSum && p<fitnessSum + (*it)->fitness){
+        double bound = fitnessSum + (*it)->fitness;
+        while(!(p>=fitnessSum && p<bound)){
             fitnessSum += (*it)->fitness;
             ++it;
+            bound = fitnessSum + (*it)->fitness;
         }
         this->selectedPopulation.push_back((*it));
     }
@@ -94,7 +96,12 @@ void GeneticAlgorithm::select(){
 void GeneticAlgorithm::evaluate(){
     for(auto it = this->population.begin(); it!=this->population.end(); ++it){
        (*it)->crossings = calculateCrossings(*it);
-        (*it)->fitness = 1.0/(*it)->crossings;
+        if((*it)->crossings == 0){
+            (*it)->fitness = 1;
+        }
+        else{
+            (*it)->fitness = 1.0/(*it)->crossings;
+        }
     }
 }
 
@@ -123,6 +130,9 @@ void GeneticAlgorithm::crossOver(){
             newPopulation.push_back(new Solution(selectedPopulation[i]));
         }
     }
+    if(newPopulation.size()!=populationSize){
+        newPopulation.push_back(new Solution(selectedPopulation[one]));
+    }
 }
 
 void GeneticAlgorithm::crossOverVertices(Solution *parent1, Solution *parent2, Solution *child1, Solution *child2){
@@ -134,14 +144,20 @@ void GeneticAlgorithm::crossOverVertices(Solution *parent1, Solution *parent2, S
     int end = max(cp1, cp2);
     vector<unsigned int> vertices1 = parent1->getVerteOrder();
     vector<unsigned int> vertices2 = parent2->getVerteOrder();
+    vector<unsigned int> verticesChild1 = vertices1;
+    vector<unsigned int> verticesChild2 = vertices2;
     for(int i=start; i<end; i++){
         int vertex = vertices2[i];
-        child1->vertexOrder[vertices1[i]] = child1->vertexOrder[vertex];
+        child1->vertexOrder[verticesChild1[i]] = child1->vertexOrder[vertex];
+        verticesChild1[child1->vertexOrder[vertex]] = verticesChild1[i];
         child1->vertexOrder[vertex] = i;
+        verticesChild1[i] = vertex;
 
         vertex = vertices1[i];
-        child2->vertexOrder[vertices2[i]] = child2->vertexOrder[vertex];
+        child2->vertexOrder[verticesChild2[i]] = child2->vertexOrder[vertex];
+        verticesChild2[child2->vertexOrder[vertex]] = verticesChild2[i];
         child2->vertexOrder[vertex] = i;
+        verticesChild2[i] = vertex;
     }
 }
 

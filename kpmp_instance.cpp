@@ -139,7 +139,7 @@ void calculateKPMP(int num){
     //genetic algorithm
     clock_t begin = clock();
     GeneticAlgorithm geneticAlgorithm;
-    geneticAlgorithm.setParameters(50, 0.8, 0.2, 50);
+    geneticAlgorithm.setParameters(50, 0.8, 0.3, 100);
     Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
@@ -160,7 +160,7 @@ void calculateKPMP(int num){
 
 int main() {
     std::srand(std::time(0));
-    for(int i=1; i<=1; i++){
+    for(int i=2; i<=2; i++){
         calculateKPMP(i);
     }
     return 0;
