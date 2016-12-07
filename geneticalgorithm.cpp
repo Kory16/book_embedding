@@ -42,6 +42,7 @@ Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesList, int pagesNum, i
         cout<<"Iteration "<<iterations<<" , best instance crossings: "<<currentBest->crossings<<endl;
         iterations++;
     }
+    cout<<"Best instance crossings: "<<best->crossings<<endl;
     return best;
 }
 
