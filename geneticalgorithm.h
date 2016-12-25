@@ -20,6 +20,10 @@ public:
     int getIterations(){
         return iterations;
     }
+    Solution* findBest();
+    vector<Solution*> getPopulation(){
+        return population;
+    }
 
 private:
     void initialize(vector< vector <int> >& edgesList, int pagesNum, int verticesNum);
@@ -32,7 +36,6 @@ private:
     void mutateVertices(int x);
     void mutatePages(int x);
     void replace();
-    Solution* findBest();
     int calculateCrossings(Solution * solution);
     int calcualteCrossingsOnPage(Solution* solution, int pageNum);
     void clearPopulation(vector<Solution*> p);

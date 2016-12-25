@@ -121,13 +121,13 @@ void calculateKPMP(int num){
     //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
     //local search Neighbourhood 1
-    //Neighbourhood_vertex * nv = new Neighbourhood_vertex();
-    //NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
-    //NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
+    Neighbourhood_vertex * nv = new Neighbourhood_vertex();
+    NeighbourhoodPageChange* npc = new NeighbourhoodPageChange();
+    NeighbourhoodVertexReplacement* nvr = new NeighbourhoodVertexReplacement();
 
-    //RandomStepFun* rnd = new RandomStepFun();
-    //BestImprovement* bst = new BestImprovement();
-    //FirstImprovement* frs = new FirstImprovement();
+    RandomStepFun* rnd = new RandomStepFun();
+    BestImprovement* bst = new BestImprovement();
+    FirstImprovement* frs = new FirstImprovement();
 
     //LocalSearch ls(solution);
     //Solution* solution_lc = ls.calculatePages(nvr, bst);
@@ -137,10 +137,20 @@ void calculateKPMP(int num){
     //Solution* solution_lc = ls.calculatePages(neighbourhoods);
 
     //genetic algorithm
+    //clock_t begin = clock();
+    //GeneticAlgorithm geneticAlgorithm;
+    //geneticAlgorithm.setParameters(50, 0.8, 0.3, 19);
+    //Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
+    //clock_t end = clock();
+    //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+    //hybrid
     clock_t begin = clock();
-    GeneticAlgorithm geneticAlgorithm;
-    geneticAlgorithm.setParameters(50, 0.8, 0.3, 100);
-    Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
+    Hybrid hybrid;
+    hybrid.setLocalSearchParameters(npc, bst);
+    hybrid.setGAparameters(50, 0.8, 0.1, 300);
+    hybrid.setOtherParameters(10);
+    Solution* solution=hybrid.calculate(instance->edgesList, instance->getK(), instance->getNumVertices());
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
@@ -152,7 +162,8 @@ void calculateKPMP(int num){
     writer.setSpineOrder(solution->getVerteOrder());
     writer.setCrossingsNum(solution->crossings);
     writer.setElapsedTime(elapsed_secs);
-    writer.setIterartions(geneticAlgorithm.getIterations());
+    cout<<elapsed_secs<<endl;
+    //writer.setIterartions(geneticAlgorithm.getIterations());
     writer.write("/home/magda/instances/result" + instanceNum + ".txt"); //Magda
     //writer.write("F:\\TUWIEN\\courses\\heuristic\\instances\\result" + instanceNum + ".txt"); //Kornel
     //cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
@@ -160,7 +171,7 @@ void calculateKPMP(int num){
 
 int main() {
     std::srand(std::time(0));
-    for(int i=2; i<=2; i++){
+    for(int i=1; i<=1; i++){
         calculateKPMP(i);
     }
     return 0;

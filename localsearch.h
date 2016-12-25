@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <iostream>
 
 #include "neighbourhood.h"
 #include "stepfunction.h"

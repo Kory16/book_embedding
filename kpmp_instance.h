@@ -20,6 +20,7 @@
 #include "neighbourhoodvertexreplacement.h"
 #include "gvns.h"
 #include "geneticalgorithm.h"
+#include "hybrid.h"
 
 using namespace std;
 

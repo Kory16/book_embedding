@@ -19,6 +19,10 @@ public:
     int vertexNum;
     vector <unsigned int> getVerteOrder();
     double fitness;
+
+    static bool compare_solutions (Solution* i,Solution* j){
+        return (i->crossings<j->crossings);
+    }
 };
 
 #endif // SOLUTION_H

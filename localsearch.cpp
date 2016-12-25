@@ -6,7 +6,7 @@ LocalSearch::LocalSearch(Solution *initial)
 }
 
 LocalSearch::~LocalSearch(){
-    delete initial;
+    //delete initial;
 }
 
  Solution *LocalSearch::calculatePages(Neighbourhood *neighbourhood, StepFunction *stepFun){
@@ -23,12 +23,14 @@ LocalSearch::~LocalSearch(){
                     delete x;
                }
                x=new_x;
+               sameResultCounter=0;
            }
            else{
                sameResultCounter++;
            }
            end = clock();
            elapsed_time += double(end - begin) / CLOCKS_PER_SEC;
+           cout<<"Local search iteration: "<<iteration<<", crossings: "<<x->crossings<<endl;
     }
     return x;
 }

@@ -23,13 +23,13 @@ Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesList, int pagesNum, i
     Solution* currentBest = nullptr;
     initialize(edgesList, pagesNum, verticesNum);
     evaluate();
-    while(iterations<this->maxIterations){
+    while(iterations<this->maxIterations && (currentBest==nullptr || currentBest->crossings>0 )){
         select();
         crossOver();
         mutate();
         replace();
         evaluate();
-        currentBest = findBest();
+        /* currentBest = findBest();
         if(best != nullptr && best->crossings > currentBest->crossings){
             delete best;
             best = new Solution(currentBest);
@@ -39,9 +39,11 @@ Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesList, int pagesNum, i
                 best = new Solution(currentBest);
             }
         }
-        cout<<"Iteration "<<iterations<<" , best instance crossings: "<<currentBest->crossings<<endl;
+        cout<<"Iteration "<<iterations<<" , best instance crossings: "<<currentBest->crossings<<endl;*/
+        cout<<"GA iteration "<<iterations<<endl;
         iterations++;
     }
+    best = findBest();
     cout<<"Best instance crossings: "<<best->crossings<<endl;
     return best;
 }
@@ -98,7 +100,7 @@ void GeneticAlgorithm::evaluate(){
     for(auto it = this->population.begin(); it!=this->population.end(); ++it){
        (*it)->crossings = calculateCrossings(*it);
         if((*it)->crossings == 0){
-            (*it)->fitness = 1;
+            (*it)->fitness = 2;
         }
         else{
             (*it)->fitness = 1.0/(*it)->crossings;
