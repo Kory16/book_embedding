@@ -147,6 +147,7 @@ void calculateKPMP(int num){
     //hybrid
     clock_t begin = clock();
     Hybrid hybrid;
+    npc->setSize(2);
     hybrid.setLocalSearchParameters(npc, bst);
     hybrid.setGAparameters(50, 0.8, 0.1, 300);
     hybrid.setOtherParameters(10);
@@ -169,10 +170,38 @@ void calculateKPMP(int num){
     //cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
 }
 
-int main() {
-    std::srand(std::time(0));
-    for(int i=1; i<=1; i++){
-        calculateKPMP(i);
+void calculateGAforTuning(string instance_name, string output, int max_iteration, double Pc, double Pm, int pop_size){
+    KPMPInstance* instance = KPMPInstance::readInstance(instance_name);
+    //genetic algorithm
+    //clock_t begin = clock();
+    GeneticAlgorithm geneticAlgorithm;
+    geneticAlgorithm.setParameters(pop_size, Pc, Pm, max_iteration);
+    Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
+    ofstream outfile(output, ios::out);
+    outfile<<solution->crossings;
+    outfile.close();
+    //clock_t end = clock();
+    //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+}
+
+int main(int argc, char *argv[]) {
+
+    if (argc == 1){
+        std::srand(std::time(0));
+        for(int i=2; i<=2; i++){
+            calculateKPMP(i);
+        }
+    }
+    else{
+        int iterations = atoi(argv[1]);
+        double Pc = atof(argv[5]);
+        double Pm = atof(argv[6]);
+        int pop_size = atoi(argv[7]);
+        string instance = argv[2];
+        string output = argv[3];
+        unsigned int seed = atoi(argv[4]);
+        std::srand(seed);
+        calculateGAforTuning(instance, output, iterations, Pc, Pm, pop_size);
     }
     return 0;
 }

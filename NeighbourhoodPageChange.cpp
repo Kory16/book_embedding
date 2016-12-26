@@ -51,9 +51,9 @@ void NeighbourhoodPageChange::calculateNeighbourhoodSize(){
 
 void NeighbourhoodPageChange::changePage(Solution* s, int edge, int pageNum){
     int prevPage = s->edgesListWithPages[edge][2];
-    if (pageNum >= prevPage){
+    /*if (pageNum >= prevPage){
         pageNum += 1;
-    }
+    }*/
     int a=calcualteCrossingsOnPage(s, prevPage);
     int b=calcualteCrossingsOnPage(s, pageNum);
 
