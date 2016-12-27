@@ -147,10 +147,10 @@ void calculateKPMP(int num){
     //hybrid
     clock_t begin = clock();
     Hybrid hybrid;
-    npc->setSize(2);
+    npc->setSize(1);
     hybrid.setLocalSearchParameters(npc, bst);
     hybrid.setGAparameters(50, 0.8, 0.1, 300);
-    hybrid.setOtherParameters(10);
+    hybrid.setOtherParameters(10); // number of expoited instances after GA
     Solution* solution=hybrid.calculate(instance->edgesList, instance->getK(), instance->getNumVertices());
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
@@ -170,18 +170,20 @@ void calculateKPMP(int num){
     //cout<<ls.elapsed_time<<" "<<ls.iteration<<" "<<solution->crossings<<endl;
 }
 
-void calculateGAforTuning(string instance_name, string output, int max_iteration, double Pc, double Pm, int pop_size){
+int calculateGAforTuning(string instance_name, int max_iteration, double Pc, double Pm, int pop_size){
     KPMPInstance* instance = KPMPInstance::readInstance(instance_name);
     //genetic algorithm
     //clock_t begin = clock();
     GeneticAlgorithm geneticAlgorithm;
     geneticAlgorithm.setParameters(pop_size, Pc, Pm, max_iteration);
     Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
-    ofstream outfile(output, ios::out);
-    outfile<<solution->crossings;
-    outfile.close();
+    cout<<solution->crossings;
+    //ofstream outfile(output, ios::out);
+    //outfile<<solution->crossings;
+    //outfile.close();
     //clock_t end = clock();
     //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    return solution->crossings;
 }
 
 int main(int argc, char *argv[]) {
@@ -193,15 +195,15 @@ int main(int argc, char *argv[]) {
         }
     }
     else{
-        int iterations = atoi(argv[1]);
-        double Pc = atof(argv[5]);
-        double Pm = atof(argv[6]);
-        int pop_size = atoi(argv[7]);
-        string instance = argv[2];
-        string output = argv[3];
-        unsigned int seed = atoi(argv[4]);
+        int iterations = atoi(argv[3]);
+        double Pc = atof(argv[4]);
+        double Pm = atof(argv[5]);
+        int pop_size = atoi(argv[6]);
+        string instance = argv[1];
+        //string output = argv[3];
+        unsigned int seed = atoi(argv[2]);
         std::srand(seed);
-        calculateGAforTuning(instance, output, iterations, Pc, Pm, pop_size);
+        return calculateGAforTuning(instance, iterations, Pc, Pm, pop_size);
     }
     return 0;
 }

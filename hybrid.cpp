@@ -35,9 +35,11 @@ Solution* Hybrid::calculate(vector< vector <int> >& edgesList, int pagesNum, int
 
     // Local search to explore neighbourhood
     Solution* solution_lc;
+    int iterations = 0;
     for(auto it = bestSolutions.begin(); it!=bestSolutions.end(); ++it){
         LocalSearch ls(*it);
         solution_lc = ls.calculatePages(this->neighbourhood, this->stepFun);
+        iterations+=ls.iteration;
         if(solution_lc->crossings < solution->crossings){
             delete solution;
             solution = solution_lc;
@@ -46,7 +48,7 @@ Solution* Hybrid::calculate(vector< vector <int> >& edgesList, int pagesNum, int
             delete solution_lc;
         }
     }
-
+    cout<<"Local search iterations: "<<iterations-solutionsExplorNum<<endl;
     cout<<"Final solution "<<solution->crossings<<" crossings."<<endl;
     return solution;
 }

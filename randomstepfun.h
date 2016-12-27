@@ -14,6 +14,9 @@ class RandomStepFun : public StepFunction
 public:
     RandomStepFun();
     Solution * getNeighbour(Solution *initial, Neighbourhood* n);
+    int getMaxNonImprovementIterations(){
+        return 10;
+    }
 };
 
 #endif // RANDOMSTEPFUN_H
