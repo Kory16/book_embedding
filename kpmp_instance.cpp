@@ -186,6 +186,29 @@ int calculateGAforTuning(string instance_name, int max_iteration, double Pc, dou
     return solution->crossings;
 }
 
+void calculateGAforStatisticalTest(int num, int max_iteration, double Pc, double Pm, int pop_size){
+    string instanceNum = to_string(num);
+    cout<<"calculating instance "<<instanceNum<<endl;
+    KPMPInstance* instance = KPMPInstance::readInstance("/home/magda/instances/automatic-" + instanceNum + ".txt"); //Magda
+    //genetic algorithm
+    //clock_t begin = clock();
+    int mean = 0;
+    for (int i=1; i<=30; i++){
+        GeneticAlgorithm geneticAlgorithm;
+        geneticAlgorithm.setParameters(pop_size, Pc, Pm, max_iteration);
+        Solution* solution = geneticAlgorithm.run(instance->edgesList, instance->getK(), instance->getNumVertices());
+        cout<<"test " << i<<" result "<<solution->crossings<<endl;
+        mean += solution->crossings;
+    }
+    //ofstream outfile(output, ios::out);
+    //outfile<<solution->crossings;
+    //outfile.close();
+    //clock_t end = clock();
+    //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    mean=mean/30;
+    cout<<"mean: "<<mean<<endl;
+}
+
 int main(int argc, char *argv[]) {
 
     if (argc == 1){
@@ -195,15 +218,21 @@ int main(int argc, char *argv[]) {
         }
     }
     else{
-        int iterations = atoi(argv[3]);
-        double Pc = atof(argv[4]);
-        double Pm = atof(argv[5]);
-        int pop_size = atoi(argv[6]);
-        string instance = argv[1];
-        //string output = argv[3];
-        unsigned int seed = atoi(argv[2]);
-        std::srand(seed);
-        return calculateGAforTuning(instance, iterations, Pc, Pm, pop_size);
+        if(string(argv[1]) == "tests"){
+            calculateGAforStatisticalTest(7, 100, 0.8, 0.3, 50); // untuned
+            calculateGAforStatisticalTest(7, 100, 0.3615, 0.2413, 75); // tuned
+        }
+        else{
+            int iterations = atoi(argv[3]);
+            double Pc = atof(argv[4]);
+            double Pm = atof(argv[5]);
+            int pop_size = atoi(argv[6]);
+            string instance = argv[1];
+            //string output = argv[3];
+            unsigned int seed = atoi(argv[2]);
+            std::srand(seed);
+            calculateGAforTuning(instance, iterations, Pc, Pm, pop_size);
+        }
     }
     return 0;
 }

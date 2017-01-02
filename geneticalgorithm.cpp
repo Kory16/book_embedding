@@ -40,11 +40,11 @@ Solution* GeneticAlgorithm::run(vector<vector<int> > &edgesList, int pagesNum, i
             }
         }
         cout<<"Iteration "<<iterations<<" , best instance crossings: "<<currentBest->crossings<<endl;*/
-        cout<<"GA iteration "<<iterations<<endl;
+        //cout<<"GA iteration "<<iterations<<endl;
         iterations++;
     }
     best = findBest();
-    cout<<"Best instance crossings: "<<best->crossings<<endl;
+    //cout<<"Best instance crossings: "<<best->crossings<<endl;
     return best;
 }
 
